@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "338431868901",
+    "project_id": "apprecetascocinaftc",
+    "storage_bucket": "apprecetascocinaftc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338431868901:android:a18ff0a2c3e4fa0f5f390c",
+        "android_client_info": {
+          "package_name": "com.fct.apprecetascocinaftc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "338431868901-326u8rurmace3esgnen9me5bblg141ui.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCR2pl18PzwRGUcs_xHIIyff2CTarEorjM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "338431868901-326u8rurmace3esgnen9me5bblg141ui.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
