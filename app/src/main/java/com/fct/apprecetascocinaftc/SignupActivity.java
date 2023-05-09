@@ -1,5 +1,6 @@
 package com.fct.apprecetascocinaftc;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +32,26 @@ public class SignupActivity extends AppCompatActivity {
     private EditText mPassword2EditText;
     private Button mSignUpButton;
     private FirebaseFirestore mFirestore;
+
+    private String hashPassword(String password, String salt) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-512");
+        md.update(salt.getBytes());
+        byte[] hashedPassword = md.digest(password.getBytes());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return Base64.getEncoder().encodeToString(hashedPassword);
+        }
+        else return null;
+    }
+
+    private String generateSalt() {
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return Base64.getEncoder().encodeToString(salt);
+        }
+        else return null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +77,13 @@ public class SignupActivity extends AppCompatActivity {
                 String email = mEmailEditText.getText().toString().trim();
                 String password = mPasswordEditText.getText().toString().trim();
                 String id = email; // Utilizamos el email como identificador único
+                String salt = generateSalt();
+                String hashedPassword = "";
+                try {
+                    hashedPassword = hashPassword(password, salt);
+                } catch (NoSuchAlgorithmException e) {
+                    Log.e("SignupActivity", "Error al encriptar la contraseña", e);
+                }
 
                 // Validar entrada de usuario aquí según tus requerimientos
 
@@ -60,8 +92,13 @@ public class SignupActivity extends AppCompatActivity {
                 user.put("apellidos", apellidos);
                 user.put("fecha_nacimiento", fechaNacimiento);
                 user.put("email", email);
-                user.put("password", password);
+                user.put("password", hashedPassword);
                 user.put("id", id);
+
+
+                //Metodo para verificarlo en el login:
+                //String password = mPasswordEditText.getText().toString().trim();
+                //boolean passwordMatch = PasswordUtils.verifyPassword(password, hashedPassword, salt);
 
                 mFirestore.collection("Usuarios")
                         .document(id)
