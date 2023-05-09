@@ -8,4 +8,5 @@
     <string name="name">Nombre</string>
     <string name="surname">Apellidos</string>
     <string name="birthdate">Fecha de nacimiento</string>
+    <string name="recetas" />
 </resources>

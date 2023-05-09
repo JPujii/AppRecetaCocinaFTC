@@ -9,7 +9,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="pink">#A3033A</color>
-    <color name="dark_pink">#730329</color>
+    <color name="red">#A3033A</color>
+    <color name="dark_red">#730329</color>
 
 </resources>

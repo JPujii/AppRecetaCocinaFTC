@@ -3,41 +3,47 @@ package com.fct.apprecetascocinaftc;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import com.fct.apprecetascocinaftc.databinding.ActivityLoginBinding;
+
 
 public class LoginActivity extends AppCompatActivity {
+
+    private ActivityLoginBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        // Base de datos temporal
+        SimBaseDatos db = new SimBaseDatos();
 
-        TextView registerButton = findViewById(R.id.registerButton);
-        registerButton.setOnClickListener(new View.OnClickListener() {
+        binding.butLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get email and password from EditText fields
-                EditText emailEditText = findViewById(R.id.email_edit_text);
-                EditText passwordEditText = findViewById(R.id.password_edit_text);
-                String email = emailEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
+                for(int i = 0; i < db.size(); i++) {
+                    if(binding.emailEditText.getText().toString().equals(db.get(i).email) && binding.passwordEditText.getText().toString().equals(db.get(i).pass)) {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
             }
         });
 
-        Button loginButton = findViewById(R.id.butLogin);
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        binding.butRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get email and password from EditText fields
-                EditText emailEditText = findViewById(R.id.email_edit_text);
-                EditText passwordEditText = findViewById(R.id.password_edit_text);
-                String email = emailEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
+                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(intent);
+                // Finalizar la actividad de login para evitar que el usuario pueda volver a ella (no funciona)
             }
         });
+
     }
 }

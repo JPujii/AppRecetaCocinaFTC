@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginHorizontal="30dp"
-        app:cardBackgroundColor="@color/pink"
+        app:cardBackgroundColor="@color/red"
         app:cardCornerRadius="8dp">
 
         <LinearLayout
@@ -34,7 +34,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_email"
-                app:tint="@color/dark_pink" />
+                app:tint="@color/dark_red" />
 
             <EditText
                 android:id="@+id/email_edit_text"
@@ -54,7 +54,7 @@
         android:layout_height="50dp"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="20dp"
-        app:cardBackgroundColor="@color/pink"
+        app:cardBackgroundColor="@color/red"
         app:cardCornerRadius="8dp">
 
         <LinearLayout
@@ -65,7 +65,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_lock_password"
-                app:tint="@color/dark_pink" />
+                app:tint="@color/dark_red" />
 
             <EditText
                 android:id="@+id/password_edit_text"
@@ -93,13 +93,13 @@
             android:layout_marginHorizontal="100dp"
             android:layout_marginVertical="10dp"
             android:layout_marginTop="15dp"
-            android:backgroundTint="@color/dark_pink"
+            android:backgroundTint="@color/dark_red"
             android:paddingVertical="8dp"
             android:text="@string/login"
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/registerButton"
+            android:id="@+id/butRegistro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="100dp"
@@ -107,7 +107,7 @@
             android:focusable="true"
             android:gravity="center"
             android:text="@string/sign_up"
-            android:textColor="@color/pink"
+            android:textColor="@color/red"
             android:textSize="20sp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </LinearLayout>
