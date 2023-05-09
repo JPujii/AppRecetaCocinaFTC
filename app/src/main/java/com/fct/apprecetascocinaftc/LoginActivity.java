@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
                     if(binding.emailEditText.getText().toString().equals(db.get(i).email) && binding.passwordEditText.getText().toString().equals(db.get(i).pass)) {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
+                        // Finalizar la actividad de login para evitar que el usuario pueda volver a ella
                         finish();
                     }
                 }
@@ -41,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
                 startActivity(intent);
-                // Finalizar la actividad de login para evitar que el usuario pueda volver a ella (no funciona)
             }
         });
 

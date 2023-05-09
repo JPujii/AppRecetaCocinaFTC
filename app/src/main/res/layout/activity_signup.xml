@@ -200,16 +200,4 @@
         android:text="@string/sign_up"
         android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/butLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="100dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:minHeight="48dp"
-        android:text="@string/login"
-        android:textColor="@color/red"
-        android:textSize="20sp" />
 </LinearLayout>
