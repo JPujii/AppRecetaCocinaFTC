@@ -96,7 +96,8 @@
             android:backgroundTint="@color/dark_red"
             android:paddingVertical="8dp"
             android:text="@string/login"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            tools:ignore="DuplicateIds" />
 
         <TextView
             android:id="@+id/butRegistro"

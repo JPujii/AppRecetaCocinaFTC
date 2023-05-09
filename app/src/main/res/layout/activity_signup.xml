@@ -26,10 +26,11 @@
                 app:tint="@color/dark_red" />
 
             <EditText
+                android:id="@+id/nombre_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/name"
 
+                android:hint="@string/name"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="20sp" />
@@ -55,10 +56,11 @@
                 app:tint="@color/dark_red" />
 
             <EditText
+                android:id="@+id/apellidos_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/surname"
 
+                android:hint="@string/surname"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="20sp" />
@@ -84,10 +86,11 @@
                 app:tint="@color/dark_red" />
 
             <EditText
+                android:id="@+id/fechanac_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/birthdate"
 
+                android:hint="@string/birthdate"
                 android:inputType="datetime"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
@@ -114,10 +117,11 @@
                 app:tint="@color/dark_red" />
 
             <EditText
+                android:id="@+id/email_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/email"
 
+                android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
@@ -144,6 +148,7 @@
                 app:tint="@color/dark_red" />
 
             <EditText
+                android:id="@+id/password_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/password"
@@ -173,7 +178,7 @@
                 app:tint="@color/dark_red" />
 
             <EditText
-                android:id="@+id/password_edit_text"
+                android:id="@+id/password2_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/confirmPassword"
@@ -185,7 +190,7 @@
     </androidx.cardview.widget.CardView>
 
     <Button
-        android:id="@+id/butLogin"
+        android:id="@+id/butRegistro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="100dp"
@@ -196,7 +201,7 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/butRegistro"
+        android:id="@+id/butLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="100dp"

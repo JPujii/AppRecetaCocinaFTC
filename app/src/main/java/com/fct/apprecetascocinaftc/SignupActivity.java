@@ -1,25 +1,78 @@
 package com.fct.apprecetascocinaftc;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity {
+
+    private EditText mNombreEditText;
+    private EditText mApellidosEditText;
+    private EditText mFechaNacEditText;
+    private EditText mEmailEditText;
+    private EditText mPasswordEditText;
+    private EditText mPassword2EditText;
+    private Button mSignUpButton;
+    private FirebaseFirestore mFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        // Create an instance of the Firebase Realtime Database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        mNombreEditText = findViewById(R.id.nombre_edit_text);
+        mApellidosEditText = findViewById(R.id.nombre_edit_text);
+        mFechaNacEditText = findViewById(R.id.nombre_edit_text);
+        mEmailEditText = findViewById(R.id.email_edit_text);
+        mPasswordEditText = findViewById(R.id.password_edit_text);
+        mPassword2EditText = findViewById(R.id.password2_edit_text);
+        mSignUpButton = findViewById(R.id.butRegistro);
 
-        // Register data to the Firebase Realtime Database
-        DatabaseReference usersRef = database.getReference("users");
-        String userId = "abc123";
-        usersRef.child(userId).child("name").setValue("John");
+        mFirestore = FirebaseFirestore.getInstance();
+
+        mSignUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String Nombre = mNombreEditText.getText().toString().trim();
+                String email = mEmailEditText.getText().toString().trim();
+                String password = mPasswordEditText.getText().toString().trim();
+
+                // Validar entrada de usuario aquí según tus requerimientos
+
+                Map<String, Object> user = new HashMap<>();
+                user.put("email", email);
+                user.put("password", password);
+
+                mFirestore.collection("users")
+                        .document(email)
+                        .set(user)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(SignupActivity.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(SignupActivity.this, "Error al registrar el usuario", Toast.LENGTH_SHORT).show();
+                                Log.e("SignupActivity", "Error al agregar usuario", e);
+                            }
+                        });
+            }
+        });
     }
 }
