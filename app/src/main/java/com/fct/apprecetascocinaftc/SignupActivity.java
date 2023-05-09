@@ -34,8 +34,8 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         mNombreEditText = findViewById(R.id.nombre_edit_text);
-        mApellidosEditText = findViewById(R.id.nombre_edit_text);
-        mFechaNacEditText = findViewById(R.id.nombre_edit_text);
+        mApellidosEditText = findViewById(R.id.apellidos_edit_text);
+        mFechaNacEditText = findViewById(R.id.fechanac_edit_text);
         mEmailEditText = findViewById(R.id.email_edit_text);
         mPasswordEditText = findViewById(R.id.password_edit_text);
         mPassword2EditText = findViewById(R.id.password2_edit_text);
@@ -46,18 +46,25 @@ public class SignupActivity extends AppCompatActivity {
         mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String Nombre = mNombreEditText.getText().toString().trim();
+                String nombre = mNombreEditText.getText().toString().trim();
+                String apellidos = mApellidosEditText.getText().toString().trim();
+                String fechaNacimiento = mFechaNacEditText.getText().toString().trim();
                 String email = mEmailEditText.getText().toString().trim();
                 String password = mPasswordEditText.getText().toString().trim();
+                String id = email; // Utilizamos el email como identificador único
 
                 // Validar entrada de usuario aquí según tus requerimientos
 
                 Map<String, Object> user = new HashMap<>();
+                user.put("nombre", nombre);
+                user.put("apellidos", apellidos);
+                user.put("fecha_nacimiento", fechaNacimiento);
                 user.put("email", email);
                 user.put("password", password);
+                user.put("id", id);
 
-                mFirestore.collection("users")
-                        .document(email)
+                mFirestore.collection("Usuarios")
+                        .document(id)
                         .set(user)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -76,3 +83,4 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 }
+
