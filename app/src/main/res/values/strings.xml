@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">AppRecetasCocinaFTC</string>
+    <string name="app_name">AppCocinaFCT</string>
+    <string name="email">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="login">LOGIN</string>
+    <string name="sign_up">Regístrate</string>
+    <string name="confirmPassword">Confirmar contraseña</string>
+    <string name="name">Nombre</string>
+    <string name="surname">Apellidos</string>
+    <string name="birthdate">Fecha de nacimiento</string>
+    <string name="recetas" />
 </resources>
