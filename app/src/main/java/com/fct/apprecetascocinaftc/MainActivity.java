@@ -40,15 +40,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mFirestore = FirebaseFirestore.getInstance();
 
-        binding.rvRecipes.setLayoutManager(new LinearLayoutManager(this));
-
-        Query query = mFirestore.collection("Recetas");
-        FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions =
-                new FirestoreRecyclerOptions.Builder<Recetas>().setQuery(query, Recetas.class).build();
-        recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions);
-        recipesAdapter.notifyDataSetChanged();
-        binding.rvRecipes.setAdapter(recipesAdapter);
-
         // Menu desplegable
         setSupportActionBar(binding.toolbar);
 
@@ -61,6 +52,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setHomeButtonEnabled(true);
 
         binding.navView.setNavigationItemSelectedListener(this);
+
+
+        binding.rvRecipes.setLayoutManager(new LinearLayoutManager(this));
+
+        Query query = mFirestore.collection("Recetas");
+        FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions =
+                new FirestoreRecyclerOptions.Builder<Recetas>().setQuery(query, Recetas.class).build();
+        recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions);
+        recipesAdapter.notifyDataSetChanged();
+        binding.rvRecipes.setAdapter(recipesAdapter);
 
     }
 
