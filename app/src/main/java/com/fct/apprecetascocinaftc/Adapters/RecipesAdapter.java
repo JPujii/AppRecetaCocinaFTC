@@ -1,62 +1,65 @@
 package com.fct.apprecetascocinaftc.Adapters;
 
-import android.content.Context;
+import android.app.Activity;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fct.apprecetascocinaftc.Modelo.Recipe;
+import com.fct.apprecetascocinaftc.Modelo.Recetas;
 import com.fct.apprecetascocinaftc.R;
 import com.fct.apprecetascocinaftc.databinding.ActivityMainBinding;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.List;
+public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAdapter.ViewHolder> {
 
-public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHolder> {
 
-    private List<Recipe> recipes;
-    private ActivityMainBinding binding;
-    private LayoutInflater inflate;
-    private Context context;
 
-    public RecipesAdapter(List<Recipe> recipes, Context context) {
-        this.recipes = recipes;
-        this.context = context;
-        this.inflate = LayoutInflater.from(context);
-    }
+    /**
+     * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
+     * FirestoreRecyclerOptions} for configuration options.
+     *
+     * @param options
+     */
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
-
-        // Inflar el diseño de la fila del RecyclerView
-        View itemView = inflater.inflate(R.layout.item_recipe_recycler, parent, false);
-
-        // Crear una instancia de ViewHolder
-        ViewHolder viewHolder = new ViewHolder(itemView);
-        return viewHolder;
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        // Obtener el elemento actual de la lista de datos
-        holder.textView.setText(recipes.get(position).titulo);
+    public RecipesAdapter(@NonNull FirestoreRecyclerOptions<Recetas> options) {
+        super(options);
 
     }
 
     @Override
-    public int getItemCount() {
-        return recipes.size();
+    protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull Recetas recipe) {
+        viewHolder.titulo.setText(recipe.titulo);
+        viewHolder.categoria.setText(recipe.categoria);
+
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recipe_recycler, parent, false);
+        return new ViewHolder(v);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textView;
-        public ViewHolder(View itemView) {
+
+        TextView titulo;
+        TextView categoria;
+        ImageView imagen;
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.textView);
+            titulo = itemView.findViewById(R.id.vTitulo);
+            categoria = itemView.findViewById(R.id.vCategoria);
+            imagen = itemView.findViewById(R.id.vImagen);
         }
     }
 }
+

@@ -1,17 +1,20 @@
 package com.fct.apprecetascocinaftc.Modelo;
 
-public class Recipe {
-    public int id;
+public class Recetas {
+    public Recetas(){
+
+    }
     public String titulo;
     public int steps;
     public String imagen;
-    public int idUsuario;
+    public String idUsuario;
+    public String categoria;
 
-    public Recipe(int id, String titulo, int steps, String imagen, int idUsuario) {
-        this.id = id;
+    public Recetas(String titulo, int steps, String imagen, String idUsuario, String categoria) {
         this.titulo = titulo;
         this.steps = steps;
         this.imagen = imagen;
         this.idUsuario = idUsuario;
+        this.categoria = categoria;
     }
 }
