@@ -1,6 +1,8 @@
 package com.fct.apprecetascocinaftc.Adapters;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fct.apprecetascocinaftc.Modelo.Recetas;
 import com.fct.apprecetascocinaftc.R;
+import com.fct.apprecetascocinaftc.RecetaActivity;
 import com.fct.apprecetascocinaftc.databinding.ActivityMainBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -59,6 +62,17 @@ public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAda
             titulo = itemView.findViewById(R.id.vTitulo);
             categoria = itemView.findViewById(R.id.vCategoria);
             imagen = itemView.findViewById(R.id.vImagen);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Context context = view.getContext();
+                    Intent intent = new Intent(context, RecetaActivity.class);
+                    intent.putExtra("ID", itemView.getId());
+                    context.startActivity(intent);
+                }
+            });
+
         }
     }
 }
