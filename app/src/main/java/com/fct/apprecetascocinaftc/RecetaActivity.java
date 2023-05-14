@@ -12,13 +12,21 @@ public class RecetaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receta);
 
-        String id="";
+        String titulo="";
+        String categoria="";
+        String imagen="";
+        int steps = 0;
+
         Bundle extra = getIntent().getExtras();
         if (extra!=null){
-            id=extra.getString("ID");
+            titulo=extra.getString("titulo");
+            categoria=extra.getString("categoria");
+            imagen=extra.getString("imagen");
+            steps=extra.getInt("steps");
+
         }
         TextView txtD = (TextView)findViewById(R.id.textView);
-        txtD.setText(id);
+        txtD.setText(titulo);
     }
 
 }

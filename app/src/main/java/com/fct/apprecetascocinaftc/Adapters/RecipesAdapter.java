@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,7 +43,18 @@ public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAda
     protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull Recetas recipe) {
         viewHolder.titulo.setText(recipe.titulo);
         viewHolder.categoria.setText(recipe.categoria);
-
+        viewHolder.carta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = view.getContext();
+                Intent intent = new Intent(context, RecetaActivity.class);
+                intent.putExtra("titulo", recipe.titulo);
+                intent.putExtra("categoria", recipe.categoria);
+                intent.putExtra("steps", recipe.steps);
+                intent.putExtra("imagen", recipe.imagen);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @NonNull
@@ -57,21 +69,14 @@ public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAda
         TextView titulo;
         TextView categoria;
         ImageView imagen;
+        View carta;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             titulo = itemView.findViewById(R.id.vTitulo);
             categoria = itemView.findViewById(R.id.vCategoria);
             imagen = itemView.findViewById(R.id.vImagen);
+            carta = itemView;
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Context context = view.getContext();
-                    Intent intent = new Intent(context, RecetaActivity.class);
-                    intent.putExtra("ID", itemView.getId());
-                    context.startActivity(intent);
-                }
-            });
 
         }
     }

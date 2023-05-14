@@ -10,6 +10,7 @@ public class Recetas {
     public String idUsuario;
     public String categoria;
 
+    public int id;
     public Recetas(String titulo, int steps, String imagen, String idUsuario, String categoria) {
         this.titulo = titulo;
         this.steps = steps;
