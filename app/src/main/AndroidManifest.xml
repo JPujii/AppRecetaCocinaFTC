@@ -13,6 +13,9 @@
         android:theme="@style/Theme.AppCocinaFCT"
         tools:targetApi="31">
         <activity
+            android:name=".MisRecetasActivity"
+            android:exported="false" />
+        <activity
             android:name=".RecetaActivity"
             android:exported="false" />
         <activity
@@ -35,7 +38,7 @@
             android:name=".LoginActivity"
             android:exported="true"
             android:icon="@mipmap/logofct"
-            android:label="@string/recetas"></activity>
+            android:label="@string/recetas" />
     </application>
 
 </manifest>

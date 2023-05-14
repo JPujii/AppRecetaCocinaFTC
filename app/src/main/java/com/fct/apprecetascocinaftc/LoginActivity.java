@@ -87,6 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 if (comparePasswords(password, storedPassword, storedSalt)) {
                                                     Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
                                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                    intent.putExtra("email", email);
                                                     startActivity(intent);
                                                     finish();
                                                 } else {

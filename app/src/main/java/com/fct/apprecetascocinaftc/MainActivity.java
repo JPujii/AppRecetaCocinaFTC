@@ -1,5 +1,7 @@
 package com.fct.apprecetascocinaftc;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActivityMainBinding binding;
     private RecipesAdapter recipesAdapter;
     private FirestoreRecyclerOptions<Recetas> recipes;
-
+    private String email;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     FirebaseFirestore mFirestore;
@@ -37,7 +39,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        //Bundle extra = getIntent().getExtras();
+        //email = extra.getString("email");
+        email = "jmga@gmail.com";
         mFirestore = FirebaseFirestore.getInstance();
 
         // Menu desplegable
@@ -94,6 +98,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.item_myRecipes:
                 Toast.makeText(this, "Mis las recetas", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MisRecetasActivity.class);
+                intent.putExtra("email", email); //El id del usuario se saca obteniendolo con un getExtras que venga del login
+                startActivity(intent);
                 break;
             case R.id.item_accesibility:
                 Toast.makeText(this, "Accesibilidad", Toast.LENGTH_SHORT).show();
