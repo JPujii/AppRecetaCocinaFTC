@@ -35,6 +35,7 @@
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
+
             <TextView
                 android:id="@+id/vCategoria"
                 android:layout_width="wrap_content"
@@ -45,6 +46,14 @@
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
+
+            <Button
+                android:id="@+id/btnSpeech"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right"
+                android:background="@drawable/ic_play_speech"
+                tools:ignore="SpeakableTextPresentCheck" />
         </LinearLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>

@@ -63,10 +63,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Query query = mFirestore.collection("Recetas");
         FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Recetas>().setQuery(query, Recetas.class).build();
-        recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions);
+        recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions, this);
         recipesAdapter.notifyDataSetChanged();
         binding.rvRecipes.setAdapter(recipesAdapter);
-
     }
 
     private FirestoreRecyclerOptions<Recetas> getListRecipes() {
