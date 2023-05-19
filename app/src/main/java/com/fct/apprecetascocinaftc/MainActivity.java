@@ -9,11 +9,15 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FirebaseFirestore mFirestore;
 
     private String textSize;
-
+    private boolean themeChange;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +81,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void loadPreference() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         this.textSize = pref.getString("textSize", "30");
+        this.themeChange = pref.getBoolean("themeSwith", false);
     }
+
+    private void cambiarTema() {
+        int nuevoModo;
+        if(this.themeChange){
+            nuevoModo = AppCompatDelegate.MODE_NIGHT_YES;
+        } else {
+            nuevoModo = AppCompatDelegate.MODE_NIGHT_NO;
+        }
+        AppCompatDelegate.setDefaultNightMode(nuevoModo);
+        recreate(); // Reinicia la actividad para aplicar el nuevo tema
+    }
+
 
     private FirestoreRecyclerOptions<Recetas> getListRecipes() {
         Query query = mFirestore.collection("Recetas");

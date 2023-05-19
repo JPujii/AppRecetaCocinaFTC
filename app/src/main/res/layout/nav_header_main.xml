@@ -16,7 +16,7 @@
         android:id="@+id/nav_header_imageView"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@mipmap/ic_launcher"/>
+        android:src="@mipmap/logofct"/>
     
     <TextView
         android:id="@+id/nav_header_textView"

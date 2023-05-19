@@ -11,4 +11,14 @@
             />
 
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="Tema">
+        <SwitchPreference
+            android:key="themeSwitch"
+            android:title="Tema oscuro"
+            android:summary="Cambia al tema oscuro"
+            android:defaultValue="false"
+            />
+    </PreferenceCategory>
+
 </PreferenceScreen>
