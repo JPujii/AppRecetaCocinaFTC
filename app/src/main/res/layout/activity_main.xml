@@ -29,7 +29,9 @@
             layout="@layout/app_bar_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_recipes"
             android:layout_width="match_parent"
@@ -41,7 +43,7 @@
             android:layout_marginBottom="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-
+        </LinearLayout>
         <Button
             android:id="@+id/buttonPrueba"
             android:layout_width="wrap_content"

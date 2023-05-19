@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     FirebaseFirestore mFirestore;
-
+    FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions;
     private String textSize;
     private boolean themeChange;
     @Override
@@ -67,10 +67,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding.navView.setNavigationItemSelectedListener(this);
         loadPreference();
 
-        binding.rvRecipes.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvRecipes.setLayoutManager(new WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
 
         Query query = mFirestore.collection("Recetas");
-        FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions =
+        firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Recetas>().setQuery(query, Recetas.class).build();
         float textSizeF = Float.parseFloat(this.textSize); // Pasamos el tamaño del texto al adaptador
         recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions, this, textSizeF);

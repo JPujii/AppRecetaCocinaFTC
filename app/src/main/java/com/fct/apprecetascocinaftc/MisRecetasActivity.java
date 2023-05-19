@@ -31,7 +31,7 @@ public class MisRecetasActivity extends AppCompatActivity {
         String email = extra.getString("email");
 
         mFirestore = FirebaseFirestore.getInstance();
-        binding.rvMyRecipes.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvMisRecetas.setLayoutManager(new LinearLayoutManager(this));
 
         Query query = mFirestore.collection("Recetas").whereEqualTo("idUsuario", email);
         FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions =
@@ -40,9 +40,18 @@ public class MisRecetasActivity extends AppCompatActivity {
         float textSizeF = Float.parseFloat(this.textSize); // Pasamos el tamaño del texto al adaptador
         recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions, this, textSizeF);
         recipesAdapter.notifyDataSetChanged();
-        binding.rvMyRecipes.setAdapter(recipesAdapter);
+        binding.rvMisRecetas.setAdapter(recipesAdapter);
     }
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        recipesAdapter.startListening();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        recipesAdapter.stopListening();
+    }
     public void loadPreference() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         this.textSize = pref.getString(this.textSize, "30");
