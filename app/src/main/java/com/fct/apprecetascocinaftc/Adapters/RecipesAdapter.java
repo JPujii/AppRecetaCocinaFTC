@@ -1,9 +1,7 @@
 package com.fct.apprecetascocinaftc.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,18 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fct.apprecetascocinaftc.MisRecetasActivity;
 import com.fct.apprecetascocinaftc.Modelo.Recetas;
 import com.fct.apprecetascocinaftc.R;
 import com.fct.apprecetascocinaftc.RecetaActivity;
-import com.fct.apprecetascocinaftc.databinding.ActivityMainBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Locale;
 
@@ -33,6 +26,7 @@ public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAda
 
     TextToSpeech speech;
     Context context;
+    float textSize;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -41,15 +35,19 @@ public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAda
      * @param options
      */
 
-    public RecipesAdapter(@NonNull FirestoreRecyclerOptions<Recetas> options, Context context) {
+    public RecipesAdapter(@NonNull FirestoreRecyclerOptions<Recetas> options, Context context, float textSize) {
         super(options);
         this.context = context;
+        this.textSize = textSize;
     }
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull Recetas recipe) {
         viewHolder.titulo.setText(recipe.titulo);
+        viewHolder.titulo.setTextSize(this.textSize);
         viewHolder.categoria.setText(recipe.categoria);
+        viewHolder.categoria.setTextSize(this.textSize/2);
+
         viewHolder.carta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,6 +67,7 @@ public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAda
                 speech.speak(texto, TextToSpeech.QUEUE_FLUSH, null);
             }
         });
+
     }
 
     @NonNull

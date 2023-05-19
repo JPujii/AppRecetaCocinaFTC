@@ -3,7 +3,9 @@ package com.fct.apprecetascocinaftc;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import com.fct.apprecetascocinaftc.Adapters.RecipesAdapter;
 import com.fct.apprecetascocinaftc.Modelo.Recetas;
@@ -18,6 +20,7 @@ public class MisRecetasActivity extends AppCompatActivity {
     private RecipesAdapter recipesAdapter;
     private FirestoreRecyclerOptions<Recetas> recipes;
     FirebaseFirestore mFirestore;
+    private String textSize;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,10 +36,15 @@ public class MisRecetasActivity extends AppCompatActivity {
         Query query = mFirestore.collection("Recetas").whereEqualTo("idUsuario", email);
         FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Recetas>().setQuery(query, Recetas.class).build();
-
-        recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions, this);
+        loadPreference();
+        float textSizeF = Float.parseFloat(this.textSize); // Pasamos el tamaño del texto al adaptador
+        recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions, this, textSizeF);
         recipesAdapter.notifyDataSetChanged();
         binding.rvMyRecipes.setAdapter(recipesAdapter);
+    }
 
+    public void loadPreference() {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        this.textSize = pref.getString(this.textSize, "30");
     }
 }

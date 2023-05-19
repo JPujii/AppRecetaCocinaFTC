@@ -2,8 +2,11 @@ package com.fct.apprecetascocinaftc;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -34,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle toggle;
     FirebaseFirestore mFirestore;
 
+    private String textSize;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,16 +61,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setHomeButtonEnabled(true);
 
         binding.navView.setNavigationItemSelectedListener(this);
-
+        loadPreference();
 
         binding.rvRecipes.setLayoutManager(new LinearLayoutManager(this));
 
         Query query = mFirestore.collection("Recetas");
         FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Recetas>().setQuery(query, Recetas.class).build();
-        recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions, this);
+        float textSizeF = Float.parseFloat(this.textSize); // Pasamos el tamaño del texto al adaptador
+        recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions, this, textSizeF);
         recipesAdapter.notifyDataSetChanged();
         binding.rvRecipes.setAdapter(recipesAdapter);
+    }
+
+    public void loadPreference() {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        this.textSize = pref.getString("textSize", "30");
     }
 
     private FirestoreRecyclerOptions<Recetas> getListRecipes() {
@@ -102,7 +113,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
             case R.id.item_accesibility:
-                Toast.makeText(this, "Accesibilidad", Toast.LENGTH_SHORT).show();
+                Intent settings = new Intent(this, SettingsActivity.class);
+                startActivity(settings);
                 break;
             case R.id.item_info:
                 Toast.makeText(this, "Info de la app", Toast.LENGTH_SHORT).show();
