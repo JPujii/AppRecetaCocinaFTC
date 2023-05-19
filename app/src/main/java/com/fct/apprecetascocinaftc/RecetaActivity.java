@@ -5,15 +5,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.fct.apprecetascocinaftc.databinding.ActivityMainBinding;
+import com.fct.apprecetascocinaftc.databinding.ActivityMisRecetasBinding;
+import com.fct.apprecetascocinaftc.databinding.ActivityRecetaBinding;
+
 public class RecetaActivity extends AppCompatActivity {
 
+    private ActivityRecetaBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_receta);
+        binding = ActivityRecetaBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         String titulo="";
         String categoria="";
+        String idUsuario="";
         String imagen="";
         int steps = 0;
 
@@ -21,12 +28,13 @@ public class RecetaActivity extends AppCompatActivity {
         if (extra!=null){
             titulo=extra.getString("titulo");
             categoria=extra.getString("categoria");
+            idUsuario=extra.getString("idUsuario");
             imagen=extra.getString("imagen");
             steps=extra.getInt("steps");
 
         }
-        TextView txtD = (TextView)findViewById(R.id.textView);
-        txtD.setText(titulo);
+       binding.txtTitulo.setText(titulo);
+
     }
 
 }
