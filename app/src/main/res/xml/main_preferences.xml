@@ -7,7 +7,7 @@
             android:summary="Cambiar el tamaño de la fuente"
             android:entries="@array/sizeFontValues"
             android:entryValues="@array/sizeFontKeys"
-            android:defaultValue="18"
+            android:defaultValue="24"
             />
 
     </PreferenceCategory>

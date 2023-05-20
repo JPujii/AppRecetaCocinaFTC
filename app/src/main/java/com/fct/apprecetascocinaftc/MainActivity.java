@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         binding.rvRecipes.setLayoutManager(new WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-
         Query query = mFirestore.collection("Recetas");
         firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Recetas>().setQuery(query, Recetas.class).build();
@@ -77,21 +76,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions, this, textSizeF);
         recipesAdapter.notifyDataSetChanged();
         binding.rvRecipes.setAdapter(recipesAdapter);
+
+
+        binding.buttonPrueba.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cambiarTema();
+            }
+        });
     }
 
     public void loadPreference() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        this.textSize = pref.getString("textSize", "30");
+        this.textSize = pref.getString("textSize", "24");
         this.themeChange = pref.getBoolean("themeSwith", false);
     }
 
     private void cambiarTema() {
-        int nuevoModo;
-        if(this.themeChange){
-            nuevoModo = AppCompatDelegate.MODE_NIGHT_YES;
-        } else {
-            nuevoModo = AppCompatDelegate.MODE_NIGHT_NO;
-        }
+        int modoActual = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        int nuevoModo = (modoActual == Configuration.UI_MODE_NIGHT_YES) ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES;
         AppCompatDelegate.setDefaultNightMode(nuevoModo);
         recreate(); // Reinicia la actividad para aplicar el nuevo tema
     }
