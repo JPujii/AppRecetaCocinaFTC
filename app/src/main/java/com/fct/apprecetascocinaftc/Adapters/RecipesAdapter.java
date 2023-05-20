@@ -23,7 +23,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import java.util.Locale;
 
 public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAdapter.ViewHolder> {
-
     TextToSpeech speech;
     Context context;
     float textSize;

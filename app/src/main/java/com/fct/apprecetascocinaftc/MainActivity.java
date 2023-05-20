@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.SearchView;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions;
     private String textSize;
     private boolean themeChange;
+    private Query query;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,14 +71,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         binding.rvRecipes.setLayoutManager(new WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        Query query = mFirestore.collection("Recetas");
+        query = mFirestore.collection("Recetas");
         firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Recetas>().setQuery(query, Recetas.class).build();
         float textSizeF = Float.parseFloat(this.textSize); // Pasamos el tamaño del texto al adaptador
         recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions, this, textSizeF);
         recipesAdapter.notifyDataSetChanged();
         binding.rvRecipes.setAdapter(recipesAdapter);
-
+        search_view();
 
         binding.buttonPrueba.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +109,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return firestoreRecyclerOptions;
     }
 
+    private void search_view() {
+        binding.svRecetas.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                textSearch(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                textSearch(s);
+                return false;
+            }
+        });
+    }
+    public void textSearch(String s){
+        float textSizeF = Float.parseFloat(this.textSize);
+        FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions =
+                new FirestoreRecyclerOptions.Builder<Recetas>()
+                        .setQuery(query.orderBy("titulo")
+                                .startAt(s).endAt(s+"~"), Recetas.class).build();
+        recipesAdapter = new RecipesAdapter(firestoreRecyclerOptions, this, textSizeF);
+        recipesAdapter.startListening();
+        binding.rvRecipes.setAdapter(recipesAdapter);
+    }
 
     @Override
     protected void onStart() {
