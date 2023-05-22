@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +36,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
+import java.util.Locale;
 
 public class MisRecetasActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private ActivityMisRecetasBinding binding;
@@ -47,6 +49,7 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
     private Recetas receta;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
+    private TextToSpeech speech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,11 +65,14 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
         toggle = new ActionBarDrawerToggle(this, drawer, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
         drawer.addDrawerListener(toggle);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
         binding.navView.setNavigationItemSelectedListener(this);
+
+        // Inicializacion del speaker
+        speechInit();
+
+        // Cargar las preferencias de la app
         loadPreference();
 
         mFirestore = FirebaseFirestore.getInstance();
@@ -152,21 +158,23 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
     // Menu desplegable
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.item_allRecipes:
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
+                speech.speak("Todas las recetas", TextToSpeech.QUEUE_FLUSH, null);
                 break;
             case R.id.item_myRecipes:
-                Toast.makeText(this, "Mis recetas", Toast.LENGTH_SHORT).show();
+                speech.speak("Mis recetas", TextToSpeech.QUEUE_FLUSH, null);
+                Intent intent = new Intent(this, MisRecetasActivity.class);
+                intent.putExtra("email", email); //El id del usuario se saca obteniendolo con un getExtras que venga del login
+                startActivity(intent);
                 break;
             case R.id.item_accesibility:
+                speech.speak("Ajustes", TextToSpeech.QUEUE_FLUSH, null);
                 Intent settings = new Intent(this, SettingsActivity.class);
                 startActivity(settings);
                 break;
             case R.id.item_info:
-                Toast.makeText(this, "Info de la app", Toast.LENGTH_SHORT).show();
+                speech.speak("Informacion", TextToSpeech.QUEUE_FLUSH, null);
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
@@ -191,5 +199,26 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // Inicializacion del speaker
+    public void speechInit(){
+        speech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    // Establecer el idioma español
+                    int result = speech.setLanguage(new Locale("es", "ES"));
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "Idioma no soportado");
+                    } else {
+                        Log.i("TTS", "Idioma establecido");
+                    }
+                } else {
+                    Log.e("TTS", "Inicialización fallida");
+                }
+            }
+        });
     }
 }

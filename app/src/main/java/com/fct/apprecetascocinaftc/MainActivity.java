@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,12 +32,13 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.Locale;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityMainBinding binding;
     private RecipesAdapter recipesAdapter;
-    private FirestoreRecyclerOptions<Recetas> recipes;
     private String email;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String textSize;
     private boolean themeChange;
     private Query query;
+    private TextToSpeech speech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,11 +65,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle = new ActionBarDrawerToggle(this, drawer, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
         drawer.addDrawerListener(toggle);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
         binding.navView.setNavigationItemSelectedListener(this);
+
+        //Inicializacion del speaker
+        speechInit();
+
+        // Cargar las preferencias/ajustes
         loadPreference();
 
         binding.rvRecipes.setLayoutManager(new WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -80,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding.rvRecipes.setAdapter(recipesAdapter);
         search_view();
 
+        // Boton de prueba cambio de tema
         binding.buttonPrueba.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,19 +95,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    // Obtener las preferencias de la app
     public void loadPreference() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         this.textSize = pref.getString("textSize", "24");
         this.themeChange = pref.getBoolean("themeSwith", false);
     }
 
+    // Cambia entre el tema oscuro y claro
     private void cambiarTema() {
         int modoActual = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         int nuevoModo = (modoActual == Configuration.UI_MODE_NIGHT_YES) ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES;
         AppCompatDelegate.setDefaultNightMode(nuevoModo);
         recreate(); // Reinicia la actividad para aplicar el nuevo tema
     }
-
 
     private FirestoreRecyclerOptions<Recetas> getListRecipes() {
         Query query = mFirestore.collection("Recetas");
@@ -109,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return firestoreRecyclerOptions;
     }
 
+    // View del buscador de recetas
     private void search_view() {
         binding.svRecetas.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -124,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
+
+    // Buscador de recetas
     public void textSearch(String s){
         float textSizeF = Float.parseFloat(this.textSize);
         FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions =
@@ -149,28 +160,50 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // Menu desplegable
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.item_allRecipes:
-                Toast.makeText(this, "Todas las recetas", Toast.LENGTH_SHORT).show();
+                speech.speak("Todas las recetas", TextToSpeech.QUEUE_FLUSH, null);
                 break;
             case R.id.item_myRecipes:
-                Toast.makeText(this, "Mis las recetas", Toast.LENGTH_SHORT).show();
+                speech.speak("Mis recetas", TextToSpeech.QUEUE_FLUSH, null);
                 Intent intent = new Intent(this, MisRecetasActivity.class);
                 intent.putExtra("email", email); //El id del usuario se saca obteniendolo con un getExtras que venga del login
                 startActivity(intent);
                 break;
             case R.id.item_accesibility:
+                speech.speak("Ajustes", TextToSpeech.QUEUE_FLUSH, null);
                 Intent settings = new Intent(this, SettingsActivity.class);
                 startActivity(settings);
                 break;
             case R.id.item_info:
-                Toast.makeText(this, "Info de la app", Toast.LENGTH_SHORT).show();
+                speech.speak("Informacion", TextToSpeech.QUEUE_FLUSH, null);
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    // Inicializacion del speaker
+    public void speechInit(){
+        speech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    // Establecer el idioma español
+                    int result = speech.setLanguage(new Locale("es", "ES"));
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "Idioma no soportado");
+                    } else {
+                        Log.i("TTS", "Idioma establecido");
+                    }
+                } else {
+                    Log.e("TTS", "Inicialización fallida");
+                }
+            }
+        });
+    }
+
 
     @Override
     public void onPostCreate(Bundle savedInstanceState) {

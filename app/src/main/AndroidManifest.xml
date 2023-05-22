@@ -14,13 +14,21 @@
         tools:targetApi="31">
         <activity
             android:name=".CrearRecetaActivity"
-            android:exported="false" />
+            android:exported="false">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MisRecetasActivity" />
+        </activity>
         <activity
             android:name=".SettingsActivity"
             android:exported="false" />
         <activity
             android:name=".MisRecetasActivity"
-            android:exported="false" />
+            android:exported="false">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity
             android:name=".RecetaActivity"
             android:exported="false" />
