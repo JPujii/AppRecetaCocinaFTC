@@ -4,34 +4,37 @@ public class Recetas {
     public Recetas(){
 
     }
-    private String titulo;
-    private int steps;
-    private String imagen;
+    private String nombre;
+    private String steps;
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    private String ingredientes;
     private String idUsuario;
     private String categoria;
 
-    public String getTitulo() {
-        return titulo;
-    }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
 
-    public int getSteps() {
+    public String getSteps() {
         return steps;
     }
 
-    public void setSteps(int steps) {
+    public void setSteps(String steps) {
         this.steps = steps;
     }
 
-    public String getImagen() {
-        return imagen;
+    public String getIngrdientes() {
+        return ingredientes;
     }
 
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
+    public void setIngredientes(String ingredientes) {
+        this.ingredientes = ingredientes;
     }
 
     public String getIdUsuario() {
@@ -60,10 +63,10 @@ public class Recetas {
         this.id = id;
     }
 
-    public Recetas(String titulo, int steps, String imagen, String idUsuario, String categoria) {
-        this.titulo = titulo;
+    public Recetas(String nombre, String steps, String ingredientes, String idUsuario, String categoria) {
+        this.nombre = nombre;
         this.steps = steps;
-        this.imagen = imagen;
+        this.ingredientes = ingredientes;
         this.idUsuario = idUsuario;
         this.categoria = categoria;
     }

@@ -42,7 +42,7 @@ public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAda
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull Recetas recipe) {
-        viewHolder.titulo.setText(recipe.getTitulo());
+        viewHolder.titulo.setText(recipe.getNombre());
         viewHolder.titulo.setTextSize(this.textSize);
         viewHolder.categoria.setText(recipe.getCategoria());
         viewHolder.categoria.setTextSize(this.textSize/2);
@@ -52,10 +52,9 @@ public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAda
             public void onClick(View view) {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, RecetaActivity.class);
-                intent.putExtra("titulo", recipe.getTitulo());
-                intent.putExtra("categoria", recipe.getCategoria());
+                intent.putExtra("titulo", recipe.getNombre());
                 intent.putExtra("steps", recipe.getSteps());
-                intent.putExtra("imagen", recipe.getImagen());
+                intent.putExtra("ingredientes", recipe.getIngrdientes());
                 context.startActivity(intent);
             }
         });

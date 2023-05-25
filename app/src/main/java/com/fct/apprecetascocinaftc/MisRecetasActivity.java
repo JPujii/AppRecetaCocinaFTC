@@ -78,7 +78,7 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
         mFirestore = FirebaseFirestore.getInstance();
         binding.rvMisRecetas.setLayoutManager(new WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        query = mFirestore.collection("Recetas").whereEqualTo("idUsuario", email);
+        query = mFirestore.collection("recipes").whereEqualTo("idUsuario", email);
         FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Recetas>().setQuery(query, Recetas.class).build();
         loadPreference();
@@ -120,10 +120,10 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                receta.setTitulo(document.getString("titulo"));
-                                receta.setImagen(document.getString("imagen"));
+                                receta.setNombre(document.getString("nombre"));
+                                receta.setIngredientes(document.getString("ingredientes"));
                                 receta.setIdUsuario(document.getString("idUsuario"));
-                                receta.setSteps(Integer.parseInt(document.get("steps").toString()));
+                                receta.setSteps(document.get("steps").toString());
                             }
                         }
                     }

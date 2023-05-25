@@ -19,18 +19,18 @@ public class RecetaActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         String titulo="";
-        String categoria="";
+        String ingredientes="";
         String idUsuario="";
         String imagen="";
-        int steps = 0;
+        String steps = "";
 
         Bundle extra = getIntent().getExtras();
         if (extra!=null){
             titulo=extra.getString("titulo");
-            categoria=extra.getString("categoria");
+            ingredientes=extra.getString("ingredientes");
             idUsuario=extra.getString("idUsuario");
             imagen=extra.getString("imagen");
-            steps=extra.getInt("steps");
+            steps=extra.getString("steps");
 
         }
        binding.txtTitulo.setText(titulo);

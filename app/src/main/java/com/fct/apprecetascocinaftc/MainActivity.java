@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         binding.rvRecipes.setLayoutManager(new WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        query = mFirestore.collection("Recetas");
+        query = mFirestore.collection("recipes");
         firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Recetas>().setQuery(query, Recetas.class).build();
         float textSizeF = Float.parseFloat(this.textSize); // Pasamos el tamaño del texto al adaptador
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         float textSizeF = Float.parseFloat(this.textSize);
         FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Recetas>()
-                        .setQuery(query.orderBy("titulo")
+                        .setQuery(query.orderBy("nombre")
                                 .startAt(s).endAt(s+"~"), Recetas.class).build();
         recipesAdapter = new RecipesAdapter(firestoreRecyclerOptions, this, textSizeF);
         recipesAdapter.startListening();
