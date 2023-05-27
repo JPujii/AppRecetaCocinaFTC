@@ -53,8 +53,8 @@ public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAda
                 Context context = view.getContext();
                 Intent intent = new Intent(context, RecetaActivity.class);
                 intent.putExtra("titulo", recipe.getNombre());
-                intent.putExtra("steps", recipe.getSteps());
-                intent.putExtra("ingredientes", recipe.getIngrdientes());
+                intent.putExtra("steps", recipe.getPasos());
+                intent.putExtra("ingredientes", recipe.getIngredientes());
                 context.startActivity(intent);
             }
         });

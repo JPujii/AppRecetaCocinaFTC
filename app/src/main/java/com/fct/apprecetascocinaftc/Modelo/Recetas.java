@@ -5,7 +5,10 @@ public class Recetas {
 
     }
     private String nombre;
-    private String steps;
+    private String pasos;
+    private String ingredientes;
+    private String idUsuario;
+    private String categoria;
 
     public String getNombre() {
         return nombre;
@@ -15,21 +18,15 @@ public class Recetas {
         this.nombre = nombre;
     }
 
-    private String ingredientes;
-    private String idUsuario;
-    private String categoria;
-
-
-
-    public String getSteps() {
-        return steps;
+    public String getPasos() {
+        return pasos;
     }
 
-    public void setSteps(String steps) {
-        this.steps = steps;
+    public void setPasos(String pasos) {
+        this.pasos = pasos;
     }
 
-    public String getIngrdientes() {
+    public String getIngredientes() {
         return ingredientes;
     }
 
@@ -63,9 +60,9 @@ public class Recetas {
         this.id = id;
     }
 
-    public Recetas(String nombre, String steps, String ingredientes, String idUsuario, String categoria) {
+    public Recetas(String nombre, String pasos, String ingredientes, String idUsuario, String categoria) {
         this.nombre = nombre;
-        this.steps = steps;
+        this.pasos = pasos;
         this.ingredientes = ingredientes;
         this.idUsuario = idUsuario;
         this.categoria = categoria;

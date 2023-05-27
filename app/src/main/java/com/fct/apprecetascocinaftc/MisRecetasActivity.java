@@ -123,7 +123,7 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
                                 receta.setNombre(document.getString("nombre"));
                                 receta.setIngredientes(document.getString("ingredientes"));
                                 receta.setIdUsuario(document.getString("idUsuario"));
-                                receta.setSteps(document.get("steps").toString());
+                                receta.setPasos(document.get("pasos").toString());
                             }
                         }
                     }
