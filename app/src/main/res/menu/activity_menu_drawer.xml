@@ -3,16 +3,16 @@
 
     <group>
         <item android:id="@+id/item_allRecipes"
-            android:icon="@drawable/abc_vector_test"
+            android:icon="@drawable/round_chevron_right_24"
             android:title="Todas las recetas"/>
         <item android:id="@+id/item_myRecipes"
-            android:icon="@drawable/abc_vector_test"
+            android:icon="@drawable/round_chevron_right_24"
             android:title="Mis recetas"/>
         <item android:id="@+id/item_accesibility"
-            android:icon="@drawable/abc_vector_test"
+            android:icon="@drawable/round_chevron_right_24"
             android:title="Ajustes"/>
         <item android:id="@+id/item_info"
-            android:icon="@drawable/abc_vector_test"
+            android:icon="@drawable/round_chevron_right_24"
             android:title="Informacion"/>
     </group>
 

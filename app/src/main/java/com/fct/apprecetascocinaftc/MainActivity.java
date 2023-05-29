@@ -85,14 +85,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         recipesAdapter.notifyDataSetChanged();
         binding.rvRecipes.setAdapter(recipesAdapter);
         search_view();
-
-        // Boton de prueba cambio de tema
-        binding.buttonPrueba.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cambiarTema();
-            }
-        });
     }
 
     // Obtener las preferencias de la app
@@ -163,20 +155,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.item_allRecipes:
                 speech.speak("Todas las recetas", TextToSpeech.QUEUE_FLUSH, null);
+                Intent intentMain = new Intent(this, MainActivity.class);
+                startActivity(intentMain);
+                recreate();
                 break;
             case R.id.item_myRecipes:
                 speech.speak("Mis recetas", TextToSpeech.QUEUE_FLUSH, null);
                 Intent intent = new Intent(this, MisRecetasActivity.class);
                 intent.putExtra("email", email); //El id del usuario se saca obteniendolo con un getExtras que venga del login
                 startActivity(intent);
+                recreate();
                 break;
             case R.id.item_accesibility:
                 speech.speak("Ajustes", TextToSpeech.QUEUE_FLUSH, null);
                 Intent settings = new Intent(this, SettingsActivity.class);
                 startActivity(settings);
+                recreate();
                 break;
             case R.id.item_info:
                 speech.speak("Informacion", TextToSpeech.QUEUE_FLUSH, null);
+                recreate();
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);

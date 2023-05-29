@@ -8,8 +8,6 @@ import android.widget.Switch;
 
 public class SettingsActivity extends PreferenceActivity {
 
-
-    Switch themeSwitch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

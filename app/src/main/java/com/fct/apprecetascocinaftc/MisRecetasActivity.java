@@ -161,6 +161,8 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
         switch (item.getItemId()) {
             case R.id.item_allRecipes:
                 speech.speak("Todas las recetas", TextToSpeech.QUEUE_FLUSH, null);
+                Intent intentMain = new Intent(this, MainActivity.class);
+                startActivity(intentMain);
                 break;
             case R.id.item_myRecipes:
                 speech.speak("Mis recetas", TextToSpeech.QUEUE_FLUSH, null);
