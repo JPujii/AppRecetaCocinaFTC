@@ -20,9 +20,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -40,9 +42,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean comparePasswords(String inputPassword, String storedPassword, String storedSalt) throws NoSuchAlgorithmException {
         String hashedInputPassword = hashPassword(inputPassword, storedSalt);
-        byte[] decodedStoredPassword = Base64.decode(storedPassword, Base64.NO_WRAP);
-        byte[] decodedHashedInputPassword = Base64.decode(hashedInputPassword, Base64.NO_WRAP);
-        return MessageDigest.isEqual(decodedStoredPassword, decodedHashedInputPassword);
+        byte[] storedPasswordBytes = storedPassword.getBytes(StandardCharsets.UTF_8);
+        byte[] hashedInputPasswordBytes = hashedInputPassword.getBytes(StandardCharsets.UTF_8);
+        return Arrays.equals(storedPasswordBytes, hashedInputPasswordBytes);
     }
 
     private String generateSalt() {
