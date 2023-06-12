@@ -1,0 +1,31 @@
+<div class="container-fluid g-0">
+    <app-header (sideNavToggled)="sideNavStatus = $event;"></app-header>
+
+    <main>
+        <app-sidebar [sideNavStatus]="sideNavStatus" [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-sidebar>
+
+        <div class="display-area p-3" [ngClass]="{'display-area-shrink': sideNavStatus}">
+
+            <table class="table table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Tiempo</th>
+                        <th scope="col">UserId</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let receta of listaRecetas" (click)="editarRecipe(receta.id)">
+                        <td>{{receta.id}}</td>
+                        <td>{{receta.nombre}}</td>
+                        <td>{{receta.tiempo}} min</td>
+                        <td>{{receta.userID}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button type="button" class="btn btn-outline-light button-darkred" (click)="nuevoRecipe()">Añadir</button>
+        </div>
+    </main>
+</div>

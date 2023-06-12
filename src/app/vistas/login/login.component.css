@@ -1,0 +1,7 @@
+.custom-icon {
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    background-image: url('src/assets/LogoFCT3.png');
+    background-size: cover;
+}

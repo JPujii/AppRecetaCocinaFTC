@@ -1,0 +1,21 @@
+.bg-darkred {
+    background-color: #7e0c0c;
+    /* Cambia este valor por el rojo oscuro deseado */
+}
+
+nav {
+    height: 100%;
+}
+
+.side-nav-button {
+    display: felx;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.side-nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 25%;
+}
