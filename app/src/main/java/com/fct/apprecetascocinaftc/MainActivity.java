@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         this.textSize = pref.getString("textSize", "24");
         this.themeChange = pref.getBoolean("themeSwith", false);
+
     }
 
     // Cambia entre el tema oscuro y claro

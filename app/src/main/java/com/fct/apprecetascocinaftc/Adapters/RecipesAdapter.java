@@ -47,6 +47,8 @@ public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAda
         viewHolder.categoria.setText(recipe.getCategoria());
         viewHolder.categoria.setTextSize(this.textSize/2);
 
+
+
         viewHolder.carta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
