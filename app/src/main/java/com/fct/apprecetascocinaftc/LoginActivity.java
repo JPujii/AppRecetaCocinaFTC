@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordEditText;
     private Button mLoginButton;
     private FirebaseFirestore mFirestore;
+    private TextView register;
 
     private String hashPassword(String password, String salt) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-512");
@@ -62,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         mEmailEditText = findViewById(R.id.email_edit_text);
         mPasswordEditText = findViewById(R.id.password_edit_text);
         mLoginButton = findViewById(R.id.butLogin);
+        register = findViewById(R.id.butRegistro);
 
         mFirestore = FirebaseFirestore.getInstance();
 
@@ -112,5 +115,14 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(i);
+            }
+        });
+
     }
 }

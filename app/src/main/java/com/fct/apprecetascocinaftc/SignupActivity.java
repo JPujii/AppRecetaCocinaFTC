@@ -1,5 +1,6 @@
 package com.fct.apprecetascocinaftc;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -81,6 +82,7 @@ public class SignupActivity extends AppCompatActivity {
                 user.put("email", email);
                 user.put("password", hashedPassword);
                 user.put("id", id);
+                user.put("salt", salt);
 
 
                 //Metodo para verificarlo en el login:
@@ -94,6 +96,9 @@ public class SignupActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Toast.makeText(SignupActivity.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(SignupActivity.this, LoginActivity.class);
+                                startActivity(i);
+                                finish();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
