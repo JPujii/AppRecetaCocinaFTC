@@ -17,6 +17,9 @@
             android:exported="false">
         </activity>
         <activity
+            android:name=".CrearPasosActivity"
+            android:exported="false" />
+        <activity
             android:name=".PasosActivity"
             android:exported="false" />
         <activity

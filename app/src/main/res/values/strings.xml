@@ -11,6 +11,9 @@
     <string name="recetas" />
     <string name="navigation_drawer_open">Abrir</string>
     <string name="navigation_drawer_close">Cerrar</string>
+    <string name="name2">Nombre:</string>
+    <string name="ingredientes">Ingredientes</string>
+    <string name="pasos">Pasos</string>
 
     <string-array name="sizeFontValues">
         <item>18</item>

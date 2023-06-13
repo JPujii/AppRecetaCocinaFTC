@@ -57,7 +57,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-            android:background="@drawable/ic_play_speech"
+                android:background="@drawable/ic_play_speech"
                 tools:ignore="SpeakableTextPresentCheck" />
         </FrameLayout>
 

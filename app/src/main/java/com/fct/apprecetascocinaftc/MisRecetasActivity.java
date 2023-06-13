@@ -90,7 +90,7 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
             @Override
             public void onClick(View view) {
                 Context context = view.getContext();
-                Intent intent = new Intent(context, RecetaActivity.class);
+                Intent intent = new Intent(context, CrearRecetaActivity.class);
                 intent.putExtra("idUsuario", email);
                 context.startActivity(intent);
             }

@@ -29,14 +29,13 @@ public class PasosActivity extends AppCompatActivity {
         if(contador==0){
             binding.btnBack.setVisibility(View.INVISIBLE);
         }else if(contador == pasos.length) {
-            binding.btnNext.setText("Volver");
             //Habrá que poner la valoración
         }
         int cont = contador + 1;
         binding.txtStep.setText("Paso " + cont);
         binding.txtPaso.setText(pasos[contador]);
 
-        binding.btnNext.setOnClickListener(new View.OnClickListener() {
+        binding.btnNextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 contador++;
