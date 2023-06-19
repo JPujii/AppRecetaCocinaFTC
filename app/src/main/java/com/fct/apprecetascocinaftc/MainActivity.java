@@ -1,25 +1,16 @@
 package com.fct.apprecetascocinaftc;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.SearchView;
-import android.widget.Switch;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -44,10 +35,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle toggle;
     FirebaseFirestore mFirestore;
     FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions;
-    private String textSize;
-    private boolean themeChange;
     private Query query;
     private TextToSpeech speech;
+    private int recipeCount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +46,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Bundle extra = getIntent().getExtras();
         email = extra.getString("email");
         mFirestore = FirebaseFirestore.getInstance();
+        mFirestore.collection("recipes").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                recipeCount = task.getResult().size();
+                Log.d("Recipe Count", "Total recipes: " + recipeCount);
+                // Aquí puedes realizar las acciones que desees con el número de recetas obtenido
+            } else {
+                Log.d("Recipe Count", "Error getting recipes: " + task.getException());
+            }
+        });
 
         // Menu desplegable
         setSupportActionBar(binding.toolbar);
@@ -71,36 +70,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Inicializacion del speaker
         speechInit();
 
-        // Cargar las preferencias/ajustes
-        loadPreference();
-
         binding.rvRecipes.setLayoutManager(new WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         query = mFirestore.collection("recipes");
         firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Recetas>().setQuery(query, Recetas.class).build();
-        float textSizeF = Float.parseFloat(this.textSize); // Pasamos el tamaño del texto al adaptador
-        recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions, this, textSizeF, email);
+        recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions, this, email);
         recipesAdapter.notifyDataSetChanged();
         binding.rvRecipes.setAdapter(recipesAdapter);
         search_view();
     }
 
-    // Obtener las preferencias de la app
-    public void loadPreference() {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        this.textSize = pref.getString("textSize", "24");
-        this.themeChange = pref.getBoolean("themeSwith", false);
-
-    }
-
-    // Cambia entre el tema oscuro y claro
-    private void cambiarTema() {
-        int modoActual = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        int nuevoModo = (modoActual == Configuration.UI_MODE_NIGHT_YES) ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES;
-        AppCompatDelegate.setDefaultNightMode(nuevoModo);
-        recreate(); // Reinicia la actividad para aplicar el nuevo tema
-    }
 
     private FirestoreRecyclerOptions<Recetas> getListRecipes() {
         Query query = mFirestore.collection("recipes");
@@ -128,12 +108,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // Buscador de recetas
     public void textSearch(String s){
-        float textSizeF = Float.parseFloat(this.textSize);
         FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Recetas>()
                         .setQuery(query.orderBy("nombre")
                                 .startAt(s).endAt(s+"~"), Recetas.class).build();
-        recipesAdapter = new RecipesAdapter(firestoreRecyclerOptions, this, textSizeF, email);
+        recipesAdapter = new RecipesAdapter(firestoreRecyclerOptions, this, email);
         recipesAdapter.startListening();
         binding.rvRecipes.setAdapter(recipesAdapter);
     }
@@ -157,24 +136,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 speech.speak("Todas las recetas", TextToSpeech.QUEUE_FLUSH, null);
                 Intent intentMain = new Intent(this, MainActivity.class);
                 startActivity(intentMain);
-                recreate();
                 break;
             case R.id.item_myRecipes:
                 speech.speak("Mis recetas", TextToSpeech.QUEUE_FLUSH, null);
                 Intent intent = new Intent(this, MisRecetasActivity.class);
                 intent.putExtra("email", email); //El id del usuario se saca obteniendolo con un getExtras que venga del login
+                intent.putExtra("ultimoId", recipeCount+1);
                 startActivity(intent);
-                recreate();
-                break;
-            case R.id.item_accesibility:
-                speech.speak("Ajustes", TextToSpeech.QUEUE_FLUSH, null);
-                Intent settings = new Intent(this, SettingsActivity.class);
-                startActivity(settings);
-                recreate();
-                break;
-            case R.id.item_info:
-                speech.speak("Informacion", TextToSpeech.QUEUE_FLUSH, null);
-                recreate();
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);

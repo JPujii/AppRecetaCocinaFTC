@@ -40,6 +40,7 @@ public class CrearPasosActivity extends AppCompatActivity {
     String ingredientes = "";
     String pasos = "";
     String email = "";
+    int ultimoId;
     Recetas receta;
     int recipeCount = 0;
 
@@ -57,26 +58,32 @@ public class CrearPasosActivity extends AppCompatActivity {
             ingredientes = extra.getString("ingredientes");
             pasos = extra.getString("pasos");
             email = extra.getString("email");
+            ultimoId = extra.getInt("ultimoId");
         }
+
 
 
         binding.txtNumPaso.setText("Paso " + contador);
         binding.btnCrear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int idUlt = obtenerUltimoId() + 1;
-                String id = String.valueOf(idUlt);
                 if (!pasos.isEmpty()){
                     Map<String, Object> recipe = new HashMap<>();
                     recipe.put("userID", email);
                     recipe.put("pasos", pasos);
                     recipe.put("ingredientes", ingredientes);
                     recipe.put("nombre", titulo );
-                    recipe.put("id", idUlt );
+                    recipe.put("id", ultimoId);
 
-                    mFirestore.collection("recipes").document(id)
+                    String stringId = String.valueOf(ultimoId);
+
+                    mFirestore.collection("recipes").document(stringId)
                             .set(recipe);
 
+                    Intent intent = new Intent(CrearPasosActivity.this, MisRecetasActivity.class);
+                    intent.putExtra("email", email); //El id del usuario se saca obteniendolo con un getExtras que venga del login
+                    intent.putExtra("ultimoId", recipeCount);
+                    startActivity(intent);
                 }
             }
         });
@@ -95,29 +102,11 @@ public class CrearPasosActivity extends AppCompatActivity {
                     intent.putExtra("ingredientes", ingredientes);
                     intent.putExtra("pasos", pasos);
                     intent.putExtra("email", email);
+                    intent.putExtra("ultimoId", ultimoId);
                     context.startActivity(intent);
                 }
             }
         });
 
     }
-
-    private int obtenerUltimoId() {
-        try {
-            mFirestore.collection("recipes").get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    recipeCount = task.getResult().size();
-                    Log.d("Recipe Count", "Total recipes: " + recipeCount);
-                    // Aquí puedes realizar las acciones que desees con el número de recetas obtenido
-                } else {
-                    Log.d("Recipe Count", "Error getting recipes: " + task.getException());
-                }
-            });
-            return recipeCount;
-        } catch (Exception e) {
-            Log.d("Mensage", e.toString());
-        }
-    return recipeCount;
-    }
-
 }

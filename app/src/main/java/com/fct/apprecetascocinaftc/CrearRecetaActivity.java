@@ -42,6 +42,8 @@ public class CrearRecetaActivity extends AppCompatActivity {
         binding.btnSteps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intentUltimoId = getIntent();
+                int ultimoId = intentUltimoId.getIntExtra("ultimoId", 0);
                 String l = lista.toString();
                 if(!lista.isEmpty()){
                     String listaIngredientes = binding.tvListaIngredientes.getText().toString();
@@ -52,6 +54,7 @@ public class CrearRecetaActivity extends AppCompatActivity {
                     intent.putExtra("contador", 1);
                     intent.putExtra("pasos", "");
                     intent.putExtra("email", email);
+                    intent.putExtra("ultimoId", ultimoId);
                     context.startActivity(intent);
                 }
             }

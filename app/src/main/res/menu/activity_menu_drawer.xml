@@ -8,12 +8,6 @@
         <item android:id="@+id/item_myRecipes"
             android:icon="@drawable/round_chevron_right_24"
             android:title="Mis recetas"/>
-        <item android:id="@+id/item_accesibility"
-            android:icon="@drawable/round_chevron_right_24"
-            android:title="Ajustes"/>
-        <item android:id="@+id/item_info"
-            android:icon="@drawable/round_chevron_right_24"
-            android:title="Informacion"/>
     </group>
 
 </menu>

@@ -12,39 +12,41 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="30dp">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        app:cardBackgroundColor="@color/red"
-        app:cardCornerRadius="8dp">
-
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="6dp"
-                android:src="@drawable/ic_recipe"
-                app:tint="@color/dark_red" />
+            android:layout_height="50dp"
+            app:cardBackgroundColor="@color/red"
+            app:cardCornerRadius="8dp">
 
-            <EditText
-                android:id="@+id/txtTitulo"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/name"
-                android:gravity="center_vertical"
-                android:textColor="@color/white"
-                android:enabled="false"
-                android:textColorHint="@color/white"
-                android:textSize="20sp" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="6dp"
+                    android:src="@drawable/ic_recipe"
+                    app:tint="@color/dark_red" />
+
+                <EditText
+                    android:id="@+id/txtTitulo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:gravity="center_vertical"
+                    android:hint="@string/name"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
     </FrameLayout>
+
     <androidx.cardview.widget.CardView
-        android:layout_width="290dp"
+        android:layout_width="369dp"
         android:layout_height="50dp"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="10dp"
@@ -55,6 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
+
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
@@ -65,9 +68,9 @@
             <TextView
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
-                android:hint="@string/ingredientes"
                 android:layout_marginHorizontal="8dp"
                 android:gravity="center_vertical"
+                android:hint="@string/ingredientes"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="20sp" />
@@ -84,13 +87,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <EditText
                 android:id="@+id/txtIngredientes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:enabled="false"
+                android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

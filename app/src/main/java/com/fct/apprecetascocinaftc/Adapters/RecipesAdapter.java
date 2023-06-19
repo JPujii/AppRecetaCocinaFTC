@@ -26,7 +26,6 @@ public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAda
     TextToSpeech speech;
     Context context;
     String email;
-    float textSize;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -35,19 +34,18 @@ public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAda
      * @param options
      */
 
-    public RecipesAdapter(@NonNull FirestoreRecyclerOptions<Recetas> options, Context context, float textSize, String email) {
+    public RecipesAdapter(@NonNull FirestoreRecyclerOptions<Recetas> options, Context context, String email) {
         super(options);
         this.context = context;
-        this.textSize = textSize;
         this.email = email;
     }
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull Recetas recipe) {
         viewHolder.titulo.setText(recipe.getNombre());
-        viewHolder.titulo.setTextSize(this.textSize);
+        viewHolder.titulo.setTextSize(30);
         viewHolder.categoria.setText(recipe.getCategoria());
-        viewHolder.categoria.setTextSize(this.textSize/2);
+        viewHolder.categoria.setTextSize(15);
 
 
 

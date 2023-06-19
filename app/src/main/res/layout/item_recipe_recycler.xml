@@ -52,12 +52,20 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <Button
                 android:id="@+id/btnSpeech"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:background="@drawable/ic_play_speech"
+                android:backgroundTint="@color/white"
+                android:backgroundTintMode="multiply"
+                android:isScrollContainer="false"
+                app:icon="@drawable/ic_play_speech"
+                app:iconGravity="textStart"
+                app:iconPadding="1dp"
+                app:iconSize="60dp"
                 tools:ignore="SpeakableTextPresentCheck" />
         </FrameLayout>
 

@@ -32,14 +32,17 @@
                 android:layout_marginVertical="8dp"
                 android:layout_marginHorizontal="8dp"
                 android:src="@drawable/ic_alarm"/>
+
             <EditText
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                android:layout_weight="1"
-                android:inputType="number"
                 android:layout_marginVertical="8dp"
+                android:layout_weight="1"
                 android:hint="45 min"
-                android:textSize="20sp"/>
+                android:inputType="number"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -51,15 +54,18 @@
         android:layout_marginVertical="20dp"
         app:cardCornerRadius="10dp"
         android:layout_marginHorizontal="30dp">
-    <EditText
-        android:id="@+id/txtPaso"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:hint="Escribe el paso"
-        android:inputType="textLongMessage"
-        android:textSize="20sp"
-        android:layout_weight="1" />
+
+        <EditText
+            android:id="@+id/txtPaso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_weight="1"
+            android:hint="Escribe el paso"
+            android:inputType="textLongMessage"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="20sp" />
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

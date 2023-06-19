@@ -1,5 +1,15 @@
 package com.fct.apprecetascocinaftc;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.SearchView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,35 +17,18 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.speech.tts.TextToSpeech;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.SearchView;
-import android.widget.Toast;
-
 import com.fct.apprecetascocinaftc.Adapters.RecipesAdapter;
 import com.fct.apprecetascocinaftc.Modelo.Recetas;
-import com.fct.apprecetascocinaftc.databinding.ActivityMainBinding;
 import com.fct.apprecetascocinaftc.databinding.ActivityMisRecetasBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.List;
 import java.util.Locale;
 
 public class MisRecetasActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -46,6 +39,7 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
     private String textSize;
     private Query query;
     private String email;
+    private int recipeCount;
     private Recetas receta;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
@@ -72,8 +66,9 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
         // Inicializacion del speaker
         speechInit();
 
-        // Cargar las preferencias de la app
-        loadPreference();
+        // Obtener el ultimo id de recetas
+        Intent intentUltimoId = getIntent();
+        recipeCount = intentUltimoId.getIntExtra("ultimoId", 0);
 
         mFirestore = FirebaseFirestore.getInstance();
         binding.rvMisRecetas.setLayoutManager(new WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -81,9 +76,7 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
         query = mFirestore.collection("recipes").whereEqualTo("userID", email);
         FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Recetas>().setQuery(query, Recetas.class).build();
-        loadPreference();
-        float textSizeF = Float.parseFloat(this.textSize); // Pasamos el tamaño del texto al adaptador
-        recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions, this, textSizeF, email);
+        recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions, this, email);
         recipesAdapter.notifyDataSetChanged();
         binding.rvMisRecetas.setAdapter(recipesAdapter);
         binding.fabNuevaReceta.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +85,7 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
                 Context context = view.getContext();
                 Intent intent = new Intent(context, CrearRecetaActivity.class);
                 intent.putExtra("email", email);
+                intent.putExtra("ultimoId", recipeCount);
                 context.startActivity(intent);
             }
         });
@@ -106,10 +100,7 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
         super.onStop();
         recipesAdapter.stopListening();
     }
-    public void loadPreference() {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        this.textSize = pref.getString(this.textSize, "30");
-    }
+
     private Recetas obtenerDatos(){
         receta = new Recetas();
         mFirestore.collection("recipes")
@@ -146,12 +137,11 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
         });
     }
     public void textSearch(String s){
-        float textSizeF = Float.parseFloat(this.textSize);
         FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Recetas>()
                         .setQuery(query.orderBy("nombre")
                                 .startAt(s).endAt(s+"~"), Recetas.class).build();
-        recipesAdapter = new RecipesAdapter(firestoreRecyclerOptions, this, textSizeF, email);
+        recipesAdapter = new RecipesAdapter(firestoreRecyclerOptions, this, email);
         recipesAdapter.startListening();
         binding.rvMisRecetas.setAdapter(recipesAdapter);
     }
@@ -168,15 +158,8 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
                 speech.speak("Mis recetas", TextToSpeech.QUEUE_FLUSH, null);
                 Intent intent = new Intent(this, MisRecetasActivity.class);
                 intent.putExtra("email", email); //El id del usuario se saca obteniendolo con un getExtras que venga del login
+                intent.putExtra("ultimoId", recipeCount);
                 startActivity(intent);
-                break;
-            case R.id.item_accesibility:
-                speech.speak("Ajustes", TextToSpeech.QUEUE_FLUSH, null);
-                Intent settings = new Intent(this, SettingsActivity.class);
-                startActivity(settings);
-                break;
-            case R.id.item_info:
-                speech.speak("Informacion", TextToSpeech.QUEUE_FLUSH, null);
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
