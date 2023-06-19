@@ -10,9 +10,12 @@ import android.view.View;
 import com.fct.apprecetascocinaftc.databinding.ActivityCrearRecetaBinding;
 import com.fct.apprecetascocinaftc.databinding.ActivityMainBinding;
 
+import java.util.ArrayList;
+
 public class CrearRecetaActivity extends AppCompatActivity {
     private ActivityCrearRecetaBinding binding;
     String email = "";
+    ArrayList<String> lista = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +32,8 @@ public class CrearRecetaActivity extends AppCompatActivity {
                 if(!ingrediente.isEmpty()){
                     String listaIngredientes = binding.tvListaIngredientes.getText().toString();
                     listaIngredientes += "-" + ingrediente + "\n";
+                    String p = "'" + ingrediente + "'";
+                    lista.add(p);
                     binding.tvListaIngredientes.setText(listaIngredientes);
                     binding.txtIngrediente.setText("");
                 }
@@ -37,13 +42,13 @@ public class CrearRecetaActivity extends AppCompatActivity {
         binding.btnSteps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String lista = binding.tvListaIngredientes.toString();
+                String l = lista.toString();
                 if(!lista.isEmpty()){
                     String listaIngredientes = binding.tvListaIngredientes.getText().toString();
                     Context context = view.getContext();
                     Intent intent = new Intent(context, CrearPasosActivity.class);
                     intent.putExtra("titulo", binding.etNombre.getText().toString());
-                    intent.putExtra("ingredientes", listaIngredientes);
+                    intent.putExtra("ingredientes", l);
                     intent.putExtra("contador", 1);
                     intent.putExtra("pasos", "");
                     intent.putExtra("email", email);
@@ -51,5 +56,7 @@ public class CrearRecetaActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
+
 }

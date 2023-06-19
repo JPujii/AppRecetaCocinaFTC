@@ -89,21 +89,11 @@
             android:layout_weight="1">
 
         </FrameLayout>
-        <androidx.cardview.widget.CardView
+        <Button
             android:id="@+id/btnNext"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="8dp"
-            android:backgroundTint="@color/red"
-            android:layout_marginHorizontal="40dp"
-            android:src="@drawable/ic_arrow_back"
-            app:tint="@color/dark_red"
-            android:clickable="true">
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_arrow_next"
-                app:tint="@color/dark_red" />
-        </androidx.cardview.widget.CardView>
+            android:layout_marginHorizontal="50dp"
+            android:background="@drawable/ic_arrow_next"  />
     </LinearLayout>
 </LinearLayout>

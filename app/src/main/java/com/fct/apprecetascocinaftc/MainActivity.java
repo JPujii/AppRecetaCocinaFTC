@@ -53,9 +53,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        //Bundle extra = getIntent().getExtras();
-        //email = extra.getString("email");
-        email = "jmga@gmail.com";
+        Bundle extra = getIntent().getExtras();
+        email = extra.getString("email");
         mFirestore = FirebaseFirestore.getInstance();
 
         // Menu desplegable
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Recetas>().setQuery(query, Recetas.class).build();
         float textSizeF = Float.parseFloat(this.textSize); // Pasamos el tamaño del texto al adaptador
-        recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions, this, textSizeF);
+        recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions, this, textSizeF, email);
         recipesAdapter.notifyDataSetChanged();
         binding.rvRecipes.setAdapter(recipesAdapter);
         search_view();
@@ -104,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private FirestoreRecyclerOptions<Recetas> getListRecipes() {
-        Query query = mFirestore.collection("Recetas");
+        Query query = mFirestore.collection("recipes");
         FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Recetas>().setQuery(query, Recetas.class).build();
         return firestoreRecyclerOptions;
@@ -134,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 new FirestoreRecyclerOptions.Builder<Recetas>()
                         .setQuery(query.orderBy("nombre")
                                 .startAt(s).endAt(s+"~"), Recetas.class).build();
-        recipesAdapter = new RecipesAdapter(firestoreRecyclerOptions, this, textSizeF);
+        recipesAdapter = new RecipesAdapter(firestoreRecyclerOptions, this, textSizeF, email);
         recipesAdapter.startListening();
         binding.rvRecipes.setAdapter(recipesAdapter);
     }

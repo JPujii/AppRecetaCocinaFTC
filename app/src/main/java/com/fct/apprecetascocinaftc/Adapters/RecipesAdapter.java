@@ -25,6 +25,7 @@ import java.util.Locale;
 public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAdapter.ViewHolder> {
     TextToSpeech speech;
     Context context;
+    String email;
     float textSize;
 
     /**
@@ -34,10 +35,11 @@ public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAda
      * @param options
      */
 
-    public RecipesAdapter(@NonNull FirestoreRecyclerOptions<Recetas> options, Context context, float textSize) {
+    public RecipesAdapter(@NonNull FirestoreRecyclerOptions<Recetas> options, Context context, float textSize, String email) {
         super(options);
         this.context = context;
         this.textSize = textSize;
+        this.email = email;
     }
 
     @Override
@@ -55,8 +57,11 @@ public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAda
                 Context context = view.getContext();
                 Intent intent = new Intent(context, RecetaActivity.class);
                 intent.putExtra("titulo", recipe.getNombre());
+                intent.putExtra("id", recipe.getId());
                 intent.putExtra("steps", recipe.getPasos());
+                intent.putExtra("userID", recipe.getUserID());
                 intent.putExtra("ingredientes", recipe.getIngredientes());
+                intent.putExtra("email", email);
                 context.startActivity(intent);
             }
         });

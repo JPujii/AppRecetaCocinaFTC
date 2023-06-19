@@ -1,6 +1,7 @@
 package com.fct.apprecetascocinaftc;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -18,11 +19,14 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +41,8 @@ public class CrearPasosActivity extends AppCompatActivity {
     String pasos = "";
     String email = "";
     Recetas receta;
+    int recipeCount = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,14 +64,15 @@ public class CrearPasosActivity extends AppCompatActivity {
         binding.btnCrear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = obtenerUltimoId() + 1;
+                int idUlt = obtenerUltimoId() + 1;
+                String id = String.valueOf(idUlt);
                 if (!pasos.isEmpty()){
                     Map<String, Object> recipe = new HashMap<>();
-                    recipe.put("idUsuario", email);
+                    recipe.put("userID", email);
                     recipe.put("pasos", pasos);
                     recipe.put("ingredientes", ingredientes);
                     recipe.put("nombre", titulo );
-                    recipe.put("id", id );
+                    recipe.put("id", idUlt );
 
                     mFirestore.collection("recipes").document(id)
                             .set(recipe);
@@ -87,6 +94,7 @@ public class CrearPasosActivity extends AppCompatActivity {
                     pasos += "- " + step;
                     intent.putExtra("ingredientes", ingredientes);
                     intent.putExtra("pasos", pasos);
+                    intent.putExtra("email", email);
                     context.startActivity(intent);
                 }
             }
@@ -94,12 +102,22 @@ public class CrearPasosActivity extends AppCompatActivity {
 
     }
 
-    private String obtenerUltimoId(){
-            String id = "";
+    private int obtenerUltimoId() {
         try {
-            return id;
-        }catch (Exception ex){
-            return "";
+            mFirestore.collection("recipes").get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    recipeCount = task.getResult().size();
+                    Log.d("Recipe Count", "Total recipes: " + recipeCount);
+                    // Aquí puedes realizar las acciones que desees con el número de recetas obtenido
+                } else {
+                    Log.d("Recipe Count", "Error getting recipes: " + task.getException());
+                }
+            });
+            return recipeCount;
+        } catch (Exception e) {
+            Log.d("Mensage", e.toString());
         }
+    return recipeCount;
     }
+
 }

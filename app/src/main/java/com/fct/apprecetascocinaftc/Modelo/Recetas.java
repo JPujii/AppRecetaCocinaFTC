@@ -7,7 +7,7 @@ public class Recetas {
     private String nombre;
     private String pasos;
     private String ingredientes;
-    private String idUsuario;
+    private String userID;
     private String categoria;
 
     public String getNombre() {
@@ -34,12 +34,12 @@ public class Recetas {
         this.ingredientes = ingredientes;
     }
 
-    public String getIdUsuario() {
-        return idUsuario;
+    public String getUserID() {
+        return userID;
     }
 
-    public void setIdUsuario(String idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getCategoria() {
@@ -60,11 +60,11 @@ public class Recetas {
         this.id = id;
     }
 
-    public Recetas(String nombre, String pasos, String ingredientes, String idUsuario, String categoria) {
+    public Recetas(String nombre, String pasos, String ingredientes, String userID, String categoria) {
         this.nombre = nombre;
         this.pasos = pasos;
         this.ingredientes = ingredientes;
-        this.idUsuario = idUsuario;
+        this.userID = userID;
         this.categoria = categoria;
     }
 }

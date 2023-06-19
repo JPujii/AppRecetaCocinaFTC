@@ -6,12 +6,15 @@
     android:layout_height="wrap_content"
     tools:context=".RecetaActivity"
     android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="30dp">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="30dp"
         app:cardBackgroundColor="@color/red"
         app:cardCornerRadius="8dp">
 
@@ -26,21 +29,24 @@
                 android:src="@drawable/ic_recipe"
                 app:tint="@color/dark_red" />
 
-            <TextView
+            <EditText
                 android:id="@+id/txtTitulo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/name"
                 android:gravity="center_vertical"
                 android:textColor="@color/white"
+                android:enabled="false"
                 android:textColorHint="@color/white"
                 android:textSize="20sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
     <androidx.cardview.widget.CardView
         android:layout_width="290dp"
         android:layout_height="50dp"
-        android:layout_marginHorizontal="30dp"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginTop="10dp"
         app:cardBackgroundColor="@color/red"
         app:cardCornerRadius="8dp">
@@ -57,7 +63,6 @@
                 app:tint="@color/dark_red" />
 
             <TextView
-                android:id="@+id/txtIngredientes"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:hint="@string/ingredientes"
@@ -70,16 +75,22 @@
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_marginHorizontal="30dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="10dp"
         app:cardBackgroundColor="@color/red"
         app:cardCornerRadius="8dp">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
-
+            <EditText
+                android:id="@+id/txtIngredientes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:textColorHint="@color/white"
+                android:textSize="20sp"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -95,21 +106,24 @@
             tools:background="@color/black"/>
     </FrameLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="40dp">
-
-        <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_marginVertical="40dp"
+        android:layout_marginHorizontal="40dp">
         <Button
             android:id="@+id/btnComenzar"
             android:layout_width="wrap_content"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="40dp">
+            android:text="pasos">
         </Button>
-    </LinearLayout>
+        <Button
+            android:id="@+id/btn_editar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="end"
+            android:background="@drawable/ic_edit"/>
+    </FrameLayout>
 
 </LinearLayout>
