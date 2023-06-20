@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AppCocinaFCT</string>
+    <string name="app_name">Recipe Land</string>
     <string name="email">Email</string>
     <string name="password">Contraseña</string>
     <string name="login">LOGIN</string>
@@ -14,32 +14,4 @@
     <string name="name2">Nombre:</string>
     <string name="ingredientes">Ingredientes</string>
     <string name="pasos">Pasos</string>
-
-    <string-array name="sizeFontValues">
-        <item>18</item>
-        <item>20</item>
-        <item>22</item>
-        <item>24</item>
-        <item>26</item>
-        <item>28</item>
-        <item>30</item>
-        <item>32</item>
-        <item>34</item>
-        <item>38</item>
-        <item>40</item>
-    </string-array>
-    <string-array name="sizeFontKeys">
-        <item>18</item>
-        <item>20</item>
-        <item>22</item>
-        <item>24</item>
-        <item>26</item>
-        <item>28</item>
-        <item>30</item>
-        <item>32</item>
-        <item>34</item>
-        <item>38</item>
-        <item>40</item>
-    </string-array>
-
 </resources>

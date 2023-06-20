@@ -77,16 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 new FirestoreRecyclerOptions.Builder<Recetas>().setQuery(query, Recetas.class).build();
         recipesAdapter =new RecipesAdapter(firestoreRecyclerOptions, this, email);
         recipesAdapter.notifyDataSetChanged();
-        binding.rvRecipes.setAdapter(recipesAdapter);
-        search_view();
-    }
-
-
-    private FirestoreRecyclerOptions<Recetas> getListRecipes() {
-        Query query = mFirestore.collection("recipes");
-        FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions =
-                new FirestoreRecyclerOptions.Builder<Recetas>().setQuery(query, Recetas.class).build();
-        return firestoreRecyclerOptions;
+        binding.rvRecipes.setAdapter(recipesAdapter);search_view();
     }
 
     // View del buscador de recetas
@@ -108,13 +99,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // Buscador de recetas
     public void textSearch(String s){
-        FirestoreRecyclerOptions<Recetas> firestoreRecyclerOptions =
+        this.firestoreRecyclerOptions =
                 new FirestoreRecyclerOptions.Builder<Recetas>()
                         .setQuery(query.orderBy("nombre")
                                 .startAt(s).endAt(s+"~"), Recetas.class).build();
-        recipesAdapter = new RecipesAdapter(firestoreRecyclerOptions, this, email);
+        recipesAdapter = new RecipesAdapter(this.firestoreRecyclerOptions, this, email);
         recipesAdapter.startListening();
         binding.rvRecipes.setAdapter(recipesAdapter);
+
+        // Agregar registros de log para verificar los datos recuperados
+        Log.d("RESULTADO BUSQUEDA", "Resultados de búsqueda: " + firestoreRecyclerOptions.getSnapshots());
+        for (Recetas receta : firestoreRecyclerOptions.getSnapshots()) {
+            Log.d("RESULTADO BUSQUEDA", "Receta: " + receta.getNombre()); // Cambia "getNombre()" por el método adecuado para obtener el nombre de la receta
+        }
     }
 
     @Override
@@ -135,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.item_allRecipes:
                 speech.speak("Todas las recetas", TextToSpeech.QUEUE_FLUSH, null);
                 Intent intentMain = new Intent(this, MainActivity.class);
+                intentMain.putExtra("email", email);
                 startActivity(intentMain);
                 break;
             case R.id.item_myRecipes:

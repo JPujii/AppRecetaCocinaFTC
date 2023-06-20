@@ -129,6 +129,13 @@
             android:layout_height="50dp"
             android:layout_gravity="end"
             android:background="@drawable/ic_edit"/>
+
+        <Button
+            android:id="@+id/btn_borrar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="left"
+            android:background="@drawable/ic_delete" />
     </FrameLayout>
 
 </LinearLayout>

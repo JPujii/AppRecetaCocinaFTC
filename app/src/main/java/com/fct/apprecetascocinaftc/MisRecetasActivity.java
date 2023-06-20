@@ -21,13 +21,9 @@ import com.fct.apprecetascocinaftc.Adapters.RecipesAdapter;
 import com.fct.apprecetascocinaftc.Modelo.Recetas;
 import com.fct.apprecetascocinaftc.databinding.ActivityMisRecetasBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Locale;
 
@@ -40,7 +36,6 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
     private Query query;
     private String email;
     private int recipeCount;
-    private Recetas receta;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private TextToSpeech speech;
@@ -101,26 +96,6 @@ public class MisRecetasActivity extends AppCompatActivity implements NavigationV
         recipesAdapter.stopListening();
     }
 
-    private Recetas obtenerDatos(){
-        receta = new Recetas();
-        mFirestore.collection("recipes")
-                .whereEqualTo("userID", email)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                receta.setNombre(document.getString("nombre"));
-                                receta.setIngredientes(document.getString("ingredientes"));
-                                receta.setUserID(document.getString("userID"));
-                                receta.setPasos(document.get("pasos").toString());
-                            }
-                        }
-                    }
-                });
-        return receta;
-    }
     private void search_view() {
         binding.svMisRecetas.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

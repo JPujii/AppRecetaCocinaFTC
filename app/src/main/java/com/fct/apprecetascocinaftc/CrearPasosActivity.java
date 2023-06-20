@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Trace;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.fct.apprecetascocinaftc.Modelo.Recetas;
 import com.fct.apprecetascocinaftc.databinding.ActivityCrearPasosBinding;
@@ -41,15 +42,15 @@ public class CrearPasosActivity extends AppCompatActivity {
     String pasos = "";
     String email = "";
     int ultimoId;
-    Recetas receta;
-    int recipeCount = 0;
 
+    TextView time;
+    int tiempoTotal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCrearPasosBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        time = findViewById(R.id.time);
         mFirestore = FirebaseFirestore.getInstance();
         Bundle extra = getIntent().getExtras();
         if (extra!=null){
@@ -59,6 +60,7 @@ public class CrearPasosActivity extends AppCompatActivity {
             pasos = extra.getString("pasos");
             email = extra.getString("email");
             ultimoId = extra.getInt("ultimoId");
+            tiempoTotal = extra.getInt("time");
         }
 
 
@@ -74,6 +76,7 @@ public class CrearPasosActivity extends AppCompatActivity {
                     recipe.put("ingredientes", ingredientes);
                     recipe.put("nombre", titulo );
                     recipe.put("id", ultimoId);
+                    recipe.put("tiempo", tiempoTotal);
 
                     String stringId = String.valueOf(ultimoId);
 
@@ -82,7 +85,7 @@ public class CrearPasosActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(CrearPasosActivity.this, MisRecetasActivity.class);
                     intent.putExtra("email", email); //El id del usuario se saca obteniendolo con un getExtras que venga del login
-                    intent.putExtra("ultimoId", recipeCount);
+                    intent.putExtra("ultimoId", ultimoId+1);
                     startActivity(intent);
                 }
             }
@@ -91,18 +94,26 @@ public class CrearPasosActivity extends AppCompatActivity {
         binding.btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                contador++;
+                tiempoTotal += Integer.parseInt(time.getText().toString());
                 String step = binding.txtPaso.getText().toString();
                 if(!step.isEmpty()) {
+                    if(contador > 1) {
+                        pasos += "- " + step;
+                    } else {
+                        pasos += step;
+                    }
+
+                    contador++;
+
                     Context context = view.getContext();
                     Intent intent = new Intent(context, CrearPasosActivity.class);
                     intent.putExtra("contador", contador);
                     intent.putExtra("titulo", titulo);
-                    pasos += "- " + step;
                     intent.putExtra("ingredientes", ingredientes);
                     intent.putExtra("pasos", pasos);
                     intent.putExtra("email", email);
                     intent.putExtra("ultimoId", ultimoId);
+                    intent.putExtra("time", tiempoTotal);
                     context.startActivity(intent);
                 }
             }

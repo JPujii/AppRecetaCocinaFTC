@@ -22,11 +22,18 @@
 
     <Button
         android:id="@+id/btn_editar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="50dp"
+        android:background="@drawable/ic_edit"/>
+    <Button
+        android:id="@+id/btn_speech_pasos"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="end"
         android:layout_marginHorizontal="50dp"
-        android:background="@drawable/ic_edit"/>
+        android:background="@drawable/ic_play_speech"/>
 </FrameLayout>
     <TextView
         android:id="@+id/txtPaso"
@@ -57,13 +64,16 @@
                     android:layout_marginVertical="8dp"
                     android:layout_marginHorizontal="8dp"
                     android:src="@drawable/ic_alarm"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginVertical="8dp"
-                    tools:text="45 min"
-                    android:textSize="20sp"/>
+                    android:layout_weight="1"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="20sp"
+                    tools:text="45 min" />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

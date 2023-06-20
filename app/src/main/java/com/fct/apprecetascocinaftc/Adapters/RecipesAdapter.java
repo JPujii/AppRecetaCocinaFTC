@@ -43,9 +43,9 @@ public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAda
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull Recetas recipe) {
         viewHolder.titulo.setText(recipe.getNombre());
-        viewHolder.titulo.setTextSize(30);
-        viewHolder.categoria.setText(recipe.getCategoria());
-        viewHolder.categoria.setTextSize(15);
+        viewHolder.titulo.setTextSize(25);
+        viewHolder.categoria.setText("Receta número: " + String.valueOf(recipe.getId()));
+        viewHolder.categoria.setTextSize(25/2);
 
 
 
@@ -101,14 +101,12 @@ public class RecipesAdapter extends FirestoreRecyclerAdapter<Recetas, RecipesAda
 
         TextView titulo;
         TextView categoria;
-        ImageView imagen;
         View carta;
         Button btnSpeech;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             titulo = itemView.findViewById(R.id.vTitulo);
             categoria = itemView.findViewById(R.id.vCategoria);
-            imagen = itemView.findViewById(R.id.vImagen);
             carta = itemView;
             btnSpeech = itemView.findViewById(R.id.btnSpeech);
         }

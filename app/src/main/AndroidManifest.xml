@@ -46,8 +46,7 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true"
-            android:icon="@mipmap/logofct"
-            android:label="@string/recetas">
+            android:icon="@mipmap/logofct">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

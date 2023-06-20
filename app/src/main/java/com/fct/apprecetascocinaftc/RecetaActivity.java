@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.fct.apprecetascocinaftc.databinding.ActivityRecetaBinding;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -21,7 +23,8 @@ public class RecetaActivity extends AppCompatActivity {
 
     private ActivityRecetaBinding binding;
     private boolean editar = false;
-    private String id;
+    private int id;
+    private String email;
     FirebaseFirestore db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +36,6 @@ public class RecetaActivity extends AppCompatActivity {
         String ingredientes="";
         String idUsuario="";
         String pasos = "";
-        String email = "";
         db = FirebaseFirestore.getInstance();
         Bundle extra = getIntent().getExtras();
         if (extra!=null){
@@ -42,13 +44,47 @@ public class RecetaActivity extends AppCompatActivity {
             idUsuario=extra.getString("userID");
             email=extra.getString("email");
             pasos=extra.getString("steps");
-            id=extra.getString("id");
-
+            id=extra.getInt("id");
         }
-        if (email == idUsuario){
+        if (email.equals(idUsuario)) {
             binding.btnEditar.setVisibility(View.VISIBLE);
             editar = true;
+        } else {
+            binding.btnEditar.setVisibility(View.GONE);
+            editar = false;
         }
+
+        if (email.equals(idUsuario)) {
+            binding.btnBorrar.setVisibility(View.VISIBLE); // Mostrar el botón
+        } else {
+            binding.btnBorrar.setVisibility(View.GONE); // Ocultar el botón
+        }
+
+        binding.btnBorrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.collection("recipes").document(String.valueOf(id)).delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                // El documento se eliminó exitosamente
+                                Toast.makeText(RecetaActivity.this, "Receta eliminada correctamente", Toast.LENGTH_SHORT).show();
+                                Intent intentMain = new Intent(RecetaActivity.this, MainActivity.class);
+                                intentMain.putExtra("email", email);
+                                startActivity(intentMain);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Ocurrió un error al intentar eliminar el documento
+                                Log.e("BORRADO", "INCOMPLETO");
+                                Toast.makeText(RecetaActivity.this, "No se ha podido eliminar la receta", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+            }
+        });
 
         binding.txtTitulo.setText(titulo);
         ingredientes = ingredientes.substring(2, ingredientes.length()-2);
@@ -72,6 +108,7 @@ public class RecetaActivity extends AppCompatActivity {
                 intent.putExtra("pasos", listaPasos);
                 intent.putExtra("editar", editar);
                 intent.putExtra("id", id);
+                intent.putExtra("email", email);
                 context.startActivity(intent);
             }
         });
@@ -88,7 +125,7 @@ public class RecetaActivity extends AppCompatActivity {
         Map<String, Object> data = new HashMap<>();
         data.put("ingredientes", "");
         data.put("nombre", "");
-        db.collection("recipes").document(id)
+        db.collection("recipes").document(String.valueOf(id))
                 .update(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

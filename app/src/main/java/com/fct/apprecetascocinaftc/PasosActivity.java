@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.View;
 
 import com.fct.apprecetascocinaftc.databinding.ActivityPasosBinding;
@@ -17,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class PasosActivity extends AppCompatActivity {
@@ -26,11 +29,14 @@ public class PasosActivity extends AppCompatActivity {
     String id;
     ArrayList<String> pasos = null;
     FirebaseFirestore db;
+    private TextToSpeech speech;
+    private String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityPasosBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        speechInit();
         db = FirebaseFirestore.getInstance();
         Bundle extra = getIntent().getExtras();
         if (extra!=null){
@@ -38,6 +44,7 @@ public class PasosActivity extends AppCompatActivity {
             pasos=extra.getStringArrayList("pasos");
             editar = extra.getBoolean("editar");
             id = extra.getString("id");
+            email = extra.getString("email");
         }
         if (editar){
             binding.btnEditar.setVisibility(View.VISIBLE);
@@ -50,13 +57,18 @@ public class PasosActivity extends AppCompatActivity {
         int cont = contador + 1;
         binding.txtStep.setText("Paso " + cont);
         binding.txtPaso.setText(pasos.get(contador));
-
+        binding.btnSpeechPasos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                speech.speak(pasos.get(contador), TextToSpeech.QUEUE_FLUSH, null);
+            }
+        });
         binding.btnNextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Context context = view.getContext();
                 if(contador < pasos.size() - 1){
                     contador++;
-                    Context context = view.getContext();
                     Intent intent = new Intent(context, PasosActivity.class);
                     intent.putExtra("contador", contador);
                     intent.putExtra("pasos", pasos);
@@ -64,7 +76,10 @@ public class PasosActivity extends AppCompatActivity {
                     intent.putExtra("id", id);
                     context.startActivity(intent);
                 }else{
-
+                    Log.e("TE MANDO AL MAIN", "FUNCIONA");
+                    Intent intentMain = new Intent(context, MainActivity.class);
+                    intentMain.putExtra("email", email);
+                    startActivity(intentMain);
                 }
             }
         });
@@ -109,5 +124,26 @@ public class PasosActivity extends AppCompatActivity {
                         // Ocurrió un error durante el update
                     }
                 });
+    }
+
+    // Inicializacion del speaker
+    public void speechInit(){
+        speech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    // Establecer el idioma español
+                    int result = speech.setLanguage(new Locale("es", "ES"));
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "Idioma no soportado");
+                    } else {
+                        Log.i("TTS", "Idioma establecido");
+                    }
+                } else {
+                    Log.e("TTS", "Inicialización fallida");
+                }
+            }
+        });
     }
 }
