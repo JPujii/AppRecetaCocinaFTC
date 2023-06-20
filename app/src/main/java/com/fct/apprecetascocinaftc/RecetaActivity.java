@@ -25,6 +25,7 @@ public class RecetaActivity extends AppCompatActivity {
     private boolean editar = false;
     private int id;
     private String email;
+    private String idUsuario;
     FirebaseFirestore db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,6 @@ public class RecetaActivity extends AppCompatActivity {
 
         String titulo="";
         String ingredientes="";
-        String idUsuario="";
         String pasos = "";
         db = FirebaseFirestore.getInstance();
         Bundle extra = getIntent().getExtras();
@@ -48,10 +48,8 @@ public class RecetaActivity extends AppCompatActivity {
         }
         if (email.equals(idUsuario)) {
             binding.btnEditar.setVisibility(View.VISIBLE);
-            editar = true;
         } else {
             binding.btnEditar.setVisibility(View.GONE);
-            editar = false;
         }
 
         if (email.equals(idUsuario)) {
@@ -59,6 +57,8 @@ public class RecetaActivity extends AppCompatActivity {
         } else {
             binding.btnBorrar.setVisibility(View.GONE); // Ocultar el botón
         }
+
+        binding.btnActualizar.setVisibility(View.GONE);
 
         binding.btnBorrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +108,7 @@ public class RecetaActivity extends AppCompatActivity {
                 intent.putExtra("pasos", listaPasos);
                 intent.putExtra("editar", editar);
                 intent.putExtra("id", id);
+                intent.putExtra("userId", idUsuario);
                 intent.putExtra("email", email);
                 context.startActivity(intent);
             }
@@ -115,29 +116,42 @@ public class RecetaActivity extends AppCompatActivity {
         binding.btnEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 binding.txtTitulo.setEnabled(true);
                 binding.txtIngredientes.setEnabled(true);
+
+                binding.btnActualizar.setVisibility(View.VISIBLE);
+
+                editar = true;
             }
         });
-    }
-    private void actualizarReceta(){
-        Map<String, Object> data = new HashMap<>();
-        data.put("ingredientes", "");
-        data.put("nombre", "");
-        db.collection("recipes").document(String.valueOf(id))
-                .update(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // El update se realizó exitosamente
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Ocurrió un error durante el update
-                    }
-                });
+
+        binding.btnActualizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, Object> data = new HashMap<>();
+                data.put("ingredientes", binding.txtIngredientes.getText().toString());
+                data.put("nombre", binding.txtTitulo.getText().toString());
+                db.collection("recipes").document(String.valueOf(id))
+                        .update(data)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                // El update se realizó exitosamente
+                                editar = false;
+                                binding.btnActualizar.setVisibility(View.GONE);
+                                binding.txtTitulo.setEnabled(false);
+                                binding.txtIngredientes.setEnabled(false);
+                                Toast.makeText(RecetaActivity.this, "Se actualizo la receta correctamente", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Ocurrió un error durante el update
+                                Toast.makeText(RecetaActivity.this, "No se ha podido actualizar la receta", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
     }
 }

@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.fct.apprecetascocinaftc.databinding.ActivityPasosBinding;
 import com.fct.apprecetascocinaftc.databinding.ActivityRecetaBinding;
@@ -26,11 +28,12 @@ public class PasosActivity extends AppCompatActivity {
     private ActivityPasosBinding binding;
     int contador = 0;
     boolean editar = false;
-    String id;
+    int id;
     ArrayList<String> pasos = null;
     FirebaseFirestore db;
     private TextToSpeech speech;
     private String email;
+    private String idUsuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,17 +46,24 @@ public class PasosActivity extends AppCompatActivity {
             contador=extra.getInt("contador");
             pasos=extra.getStringArrayList("pasos");
             editar = extra.getBoolean("editar");
-            id = extra.getString("id");
+            id = extra.getInt("id");
             email = extra.getString("email");
+            idUsuario = extra.getString("userId");
         }
-        if (editar){
+        if (email.equals(idUsuario)) {
             binding.btnEditar.setVisibility(View.VISIBLE);
+        } else {
+            binding.btnEditar.setVisibility(View.GONE);
         }
         if(contador==0){
             binding.btnBack.setVisibility(View.INVISIBLE);
         }else if(contador == pasos.size()) {
             //Habrá que poner la valoración
         }
+
+        binding.btnActualizarPasos.setVisibility(View.GONE);
+        binding.txtPaso.setEnabled(false);
+
         int cont = contador + 1;
         binding.txtStep.setText("Paso " + cont);
         binding.txtPaso.setText(pasos.get(contador));
@@ -74,6 +84,8 @@ public class PasosActivity extends AppCompatActivity {
                     intent.putExtra("pasos", pasos);
                     intent.putExtra("editar", editar);
                     intent.putExtra("id", id);
+                    intent.putExtra("email", email);
+                    intent.putExtra("userId", idUsuario);
                     context.startActivity(intent);
                 }else{
                     Log.e("TE MANDO AL MAIN", "FUNCIONA");
@@ -83,6 +95,7 @@ public class PasosActivity extends AppCompatActivity {
                 }
             }
         });
+
 
 
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
@@ -95,36 +108,63 @@ public class PasosActivity extends AppCompatActivity {
                 intent.putExtra("pasos", pasos);
                 intent.putExtra("editar", editar);
                 intent.putExtra("id", id);
+                intent.putExtra("email", email);
+                intent.putExtra("userId", idUsuario);
                 context.startActivity(intent);
             }
         });
         binding.btnEditar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 binding.txtPaso.setEnabled(true);
+                binding.btnActualizarPasos.setVisibility(View.VISIBLE);
+
+                editar = true;
+            }
+        });
+
+        binding.btnActualizarPasos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pasos.set(contador, binding.txtPaso.getText().toString());
+                Map<String, Object> data = new HashMap<>();
+
+                StringBuilder stringBuilder = new StringBuilder();
+                for (String elemento : pasos) {
+                    stringBuilder.append(elemento).append("-");
+                }
+
+                // Eliminar la coma y el espacio extra al final
+                if (stringBuilder.length() > 2) {
+                    stringBuilder.setLength(stringBuilder.length() - 2);
+                }
+
+                String pasosActualizados = stringBuilder.toString();
+                data.put("pasos", pasosActualizados);
+                db.collection("recipes").document(String.valueOf(id))
+                        .update(data)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                // El update se realizó exitosamente
+                                editar = false;
+                                binding.btnActualizarPasos.setVisibility(View.GONE);
+                                binding.txtPaso.setEnabled(false);
+                                Toast.makeText(PasosActivity.this, "Se actualizo el paso correctamente", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Ocurrió un error durante el update
+                                Toast.makeText(PasosActivity.this, "No se ha podido actualizar el paso", Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
 
     }
-    private void actualizarPasos(){
-        pasos.set(contador, binding.txtPaso.getText().toString());
-        Map<String, Object> data = new HashMap<>();
-        data.put("pasos", pasos);
-        db.collection("recipes").document(id)
-                .update(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // El update se realizó exitosamente
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Ocurrió un error durante el update
-                    }
-                });
-    }
+
 
     // Inicializacion del speaker
     public void speechInit(){
